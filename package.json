@@ -21,7 +21,9 @@
     "predeploy": "cd example && yarn install && yarn run build",
     "deploy": "gh-pages -d example/build"
   },
-  "dependencies": {},
+  "dependencies": {
+    "faunadb": "^2.14.0"
+  },
   "peerDependencies": {
     "react": "^16.9.0"
   },
