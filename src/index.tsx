@@ -35,9 +35,9 @@ export function useGetDocument(
     const request = db.query(q.Get(q.Ref(q.Collection(collectionName), refId)));
 
     request
-      .then(async (res) => {
+      .then((res) => {
         setStatus(STATUS.LOADING);
-        setDocument(await res);
+        setDocument(res as Document);
       })
       .then(() => {
         setStatus(STATUS.LOADED);
