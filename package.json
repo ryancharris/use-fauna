@@ -19,7 +19,8 @@
     "start": "rollup -c -w",
     "prepare": "yarn run build",
     "predeploy": "cd example && yarn install && yarn run build",
-    "deploy": "gh-pages -d example/build"
+    "deploy": "gh-pages -d example/build",
+    "prettier": "prettier --write --config ./.prettierrc \"src/**/*.{js,jsx,ts,tsx,json,css,scss,md}\" --loglevel \"log\""
   },
   "dependencies": {
     "faunadb": "^2.14.0"
@@ -35,6 +36,7 @@
     "@types/react": "^16.7.22",
     "cross-env": "^5.2.0",
     "gh-pages": "^2.0.1",
+    "prettier": "^2.0.5",
     "react": "^16.9.0",
     "react-scripts": "^3.4.0",
     "react-test-renderer": "^16.9.0",

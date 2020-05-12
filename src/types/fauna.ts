@@ -1,9 +1,9 @@
 export interface Ref {
-  id: string;
+  id: string
 }
 
 export interface Document {
-  ref: Ref;
-  ts: number;
-  data: object;
+  ref: Ref
+  ts: number
+  data: object
 }
