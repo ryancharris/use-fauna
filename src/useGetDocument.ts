@@ -1,20 +1,14 @@
 import { useEffect, useState } from "react";
 import faunadb from "faunadb";
 const { query: q } = faunadb;
-
-const STATUS = {
-  NOT_LOADED: "not-loaded",
-  LOADING: "loading",
-  LOADED: "loaded",
-  ERROR: "error",
-};
+import {FAUNA_STATUS} from './constants'
 
 export default function useGetDocument(
   db: faunadb.Client,
   collectionName: string,
   refId: string
 ): object {
-  const [status, setStatus] = useState(STATUS.NOT_LOADED);
+  const [status, setStatus] = useState<string>(FAUNA_STATUS.NOT_LOADED);
   const [document, setDocument] = useState<null | Document>(null);
 
   useEffect(() => {
@@ -22,15 +16,15 @@ export default function useGetDocument(
 
     request
       .then((res) => {
-        setStatus(STATUS.LOADING);
+        setStatus(FAUNA_STATUS.LOADING);
         setDocument(res as Document);
       })
       .then(() => {
-        setStatus(STATUS.LOADED);
+        setStatus(FAUNA_STATUS.LOADED);
       })
       .catch((err) => {
         console.error(`[fauna-hooks] ${err}`);
-        setStatus(STATUS.ERROR);
+        setStatus(FAUNA_STATUS.ERROR);
       });
   }, []);
   return [document, status];
