@@ -6,7 +6,7 @@ import { FAUNA_STATUS } from './constants'
 export default function useCreateDocument(
   db: faunadb.Client,
   collectionName: string,
-  data: Document
+  data: object
 ) {
   const [status, setStatus] = useState<string>(FAUNA_STATUS.NOT_LOADED)
   const [document, setDocument] = useState<null | Document>(null)
