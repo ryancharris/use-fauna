@@ -5,5 +5,5 @@ export interface Ref {
 export interface Document {
   ref: Ref
   ts: number
-  data: object
+  data?: object
 }
