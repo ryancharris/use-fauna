@@ -7,7 +7,7 @@ export default function useGetDocument(db: faunadb.Client): [Function, null | Do
   const [status, setStatus] = useState<string>(FAUNA_STATUS.NOT_LOADED)
   const [document, setDocument] = useState<null | Document>(null)
 
-  const getDocument = useCallback((collectionName: string, refId: string) => {
+  const getDocument = useCallback((collectionName: string, refId: string): void => {
     const request = db.query(q.Get(q.Ref(q.Collection(collectionName), refId)))
 
     request
