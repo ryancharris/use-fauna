@@ -13,7 +13,7 @@ export default function useGetAllDocuments(
   const [documents, setDocuments] = useState<null | Array<Document>>(null)
   const [status, setStatus] = useState<string>(FAUNA_STATUS.NOT_LOADED)
 
-  const getAllDocuments = useCallback((collectionName: string, resultSize?: number) => {
+  const getAllDocuments = useCallback((collectionName: string, resultSize?: number): void => {
     const request = db.query(
       q.Map(
         q.Paginate(q.Documents(q.Collection(collectionName)), { size: resultSize || 100 }),
