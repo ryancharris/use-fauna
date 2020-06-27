@@ -1,4 +1,4 @@
-import { renderHook } from '@testing-library/react-hooks'
+import { renderHook, act } from '@testing-library/react-hooks'
 
 import { FAUNA_STATUS } from './constants'
 
@@ -7,34 +7,52 @@ import useCreateDocument from './useCreateDocument'
 
 describe('useCreateDocument', () => {
   it('successfully creates a new document', async () => {
+    // Instantiate new Client to access DB
     const { result: db } = renderHook(() => useDatabase('fnADrW9uexACE1_GWGovu3My4mXWcm-tgQ3Sp3oP'))
-    const { result: docResult, waitForNextUpdate } = renderHook(() =>
-      useCreateDocument(db.current, 'products', {
-        members: ['trey', 'mike', 'paige', 'fish']
+
+    // Render hook and returns
+    const { result: docResult, waitForNextUpdate } = renderHook(() => useCreateDocument(db.current))
+    const createDocument = docResult.current[0]
+    const doc = docResult.current[1]
+    const status = docResult.current[2]
+    expect(createDocument).toBeInstanceOf(Function)
+    expect(doc).toBeNull()
+    expect(status).toEqual(FAUNA_STATUS.NOT_LOADED)
+
+    act(async () => {
+      // Trigger a request
+      createDocument('storehouses', {
+        band: ['bass', 'drums', 'guitar']
       })
-    )
+      // Changes to LOADING state
+      await waitForNextUpdate()
+      expect(doc).toBeNull()
+      expect(status).toEqual(FAUNA_STATUS.LOADING)
 
-    expect(docResult.current).toStrictEqual([null, FAUNA_STATUS.NOT_LOADED])
-
-    await waitForNextUpdate()
-
-    expect(docResult.current[0]).toBeInstanceOf(Object)
-    expect(docResult.current[1]).toEqual(FAUNA_STATUS.LOADED)
+      // Resolves with Document and LOADED status
+      await waitForNextUpdate()
+      expect(doc).toBeDefined()
+      expect(doc).toBeInstanceOf(Document)
+      expect(status).toEqual(FAUNA_STATUS.LOADED)
+    })
   })
 
   it('fails to create a new document', async () => {
+    // Instantiate new Client to access DB
     const { result: db } = renderHook(() => useDatabase('fnADrW9uexACE1_GWGovu3My4mXWcm-tgQ3Sp3oP'))
-    const { result: docResult, waitForNextUpdate } = renderHook(() =>
-      useCreateDocument(db.current, 'non-existent-collection', {
-        message: 'hello world'
-      })
-    )
 
-    expect(docResult.current).toStrictEqual([null, FAUNA_STATUS.NOT_LOADED])
+    // Render hook and returns
+    const { result: docResult, waitForNextUpdate } = renderHook(() => useCreateDocument(db.current))
+    const createDocument = docResult.current[0]
+    const doc = docResult.current[1]
+    const status = docResult.current[2]
 
-    await waitForNextUpdate()
+    act(async () => {
+      createDocument(null, null)
 
-    expect(docResult.current[0]).toBe(null)
-    expect(docResult.current[1]).toEqual(FAUNA_STATUS.ERROR)
+      await waitForNextUpdate()
+      expect(doc).toBeNull()
+      expect(status).toBe(FAUNA_STATUS.ERROR)
+    })
   })
 })

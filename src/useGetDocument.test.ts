@@ -40,7 +40,7 @@ describe('useGetDocument', () => {
     })
   })
 
-  it.only('fails with the wrong refId', async () => {
+  it('fails with the wrong refId', async () => {
     // Instantiate access to DB
     const { result: db } = renderHook(() => useDatabase('fnADrW9uexACE1_GWGovu3My4mXWcm-tgQ3Sp3oP'))
     const database = db.current
@@ -50,6 +50,7 @@ describe('useGetDocument', () => {
     const { result, waitForNextUpdate } = renderHook(() => useGetDocument(database))
     const getDocument = await result.current[0]
     const doc = result.current[1]
+    const status = result.current[2]
 
     act(async () => {
       getDocument('storehouses', '269443543992369683')
