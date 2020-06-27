@@ -3,15 +3,11 @@ import faunadb from 'faunadb'
 const { query: q } = faunadb
 import { FAUNA_STATUS } from './constants'
 
-export default function useGetDocument(
-  db: faunadb.Client,
-  collectionName: string,
-  refId: string
-): [Function, null | Document, string] {
+export default function useGetDocument(db: faunadb.Client): [Function, null | Document, string] {
   const [status, setStatus] = useState<string>(FAUNA_STATUS.NOT_LOADED)
   const [document, setDocument] = useState<null | Document>(null)
 
-  const getDocument = useCallback(() => {
+  const getDocument = useCallback((collectionName: string, refId: string) => {
     const request = db.query(q.Get(q.Ref(q.Collection(collectionName), refId)))
 
     request
