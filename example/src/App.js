@@ -15,9 +15,9 @@ const App = () => {
 
   // const [getAllDocuments, doc, status] = useGetAllDocuments(db)
 
-  const [getDocument, doc, status] = useGetDocument(db)
+  // const [getDocument, doc, status] = useGetDocument(db)
 
-  // const [createDocument, doc, status] = useCreateDocument(db, 'storehouses')
+  const [createDocument, doc, status] = useCreateDocument(db)
 
   // const [deleteDocument, doc, status] = useDeleteDocument(db)
 
@@ -29,10 +29,12 @@ const App = () => {
   return (
     <div>
       {/* <button onClick={() => getAllDocuments('storehouses', 2)}>Get all docs</button> */}
-      <button onClick={() => getDocument('storehouses', '264990427443102227')}>
+      {/* <button onClick={() => getDocument('storehouses', '264990427443102227')}>
         Get single doc
+      </button> */}
+      <button onClick={() => createDocument('storehouses', { name: 'john mayer' })}>
+        Create single doc
       </button>
-      {/* <button onClick={() => createDocument({ name: 'soulive' })}>Create single doc</button> */}
       {/* <button onClick={() => deleteDocument('storehouses', '269443476876165650')}>
         Delete single doc
       </button> */}
