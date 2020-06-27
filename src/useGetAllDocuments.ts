@@ -8,14 +8,12 @@ interface GetAllDocumentsResponse {
 }
 
 export default function useGetAllDocuments(
-  db: faunadb.Client,
-  collectionName: string,
-  resultSize?: number
+  db: faunadb.Client
 ): [Function, null | Array<Document>, string] {
   const [documents, setDocuments] = useState<null | Array<Document>>(null)
   const [status, setStatus] = useState<string>(FAUNA_STATUS.NOT_LOADED)
 
-  const getDocumentsByCollection = useCallback(() => {
+  const getAllDocuments = useCallback((collectionName: string, resultSize?: number) => {
     const request = db.query(
       q.Map(
         q.Paginate(q.Documents(q.Collection(collectionName)), { size: resultSize || 100 }),
@@ -35,5 +33,5 @@ export default function useGetAllDocuments(
       })
   }, [])
 
-  return [getDocumentsByCollection, documents, status]
+  return [getAllDocuments, documents, status]
 }
