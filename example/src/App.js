@@ -13,11 +13,11 @@ const App = () => {
   const db = useDatabase('fnADrW9uexACE1_GWGovu3My4mXWcm-tgQ3Sp3oP')
   // console.log(db)
 
-  const [getAllDocuments, allDocs, status] = useGetAllDocuments(db)
-  const [getDocument, singleDoc, status] = useGetDocument(db)
-  const [createDocument, createdDoc, status] = useCreateDocument(db)
-  const [deleteDocument, deletedDoc, status] = useDeleteDocument(db)
-  const [updateDocument, updatedDoc, status] = useUpdateDocument(db)
+  const [getAllDocuments, allDocs, allDocsStatus] = useGetAllDocuments(db)
+  const [getDocument, singleDoc, singleDocStatus] = useGetDocument(db)
+  const [createDocument, createdDoc, createDocStatus] = useCreateDocument(db)
+  const [deleteDocument, deletedDoc, deleteDocStatus] = useDeleteDocument(db)
+  const [updateDocument, updatedDoc, updateDocStatus] = useUpdateDocument(db)
 
   return (
     <div>
