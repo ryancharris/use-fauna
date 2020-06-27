@@ -7,7 +7,7 @@ import useDatabase from './useDatabase'
 import useGetDocument from './useGetDocument'
 
 describe('useGetDocument', () => {
-  it.only('gets document successfully', async () => {
+  it('gets document successfully', async () => {
     // Instantiate access to DB
     const { result: db } = renderHook(() => useDatabase('fnADrW9uexACE1_GWGovu3My4mXWcm-tgQ3Sp3oP'))
     const database = db.current

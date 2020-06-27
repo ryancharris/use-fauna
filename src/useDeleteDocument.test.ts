@@ -1,4 +1,5 @@
-import { renderHook } from '@testing-library/react-hooks'
+import { renderHook, act } from '@testing-library/react-hooks'
+import faunadb from 'faunadb'
 
 import { FAUNA_STATUS } from './constants'
 
@@ -6,44 +7,58 @@ import useDatabase from './useDatabase'
 import useDeleteDocument from './useDeleteDocument'
 
 describe('useDeleteDocument', () => {
-    it('successfully deletes a document', async () => {
-        const collection = 'customers'
-        const ref = '266450476974735890'
+  it('deletes document successfully', async () => {
+    // Instantiate access to DB
+    const { result: db } = renderHook(() => useDatabase('fnADrW9uexACE1_GWGovu3My4mXWcm-tgQ3Sp3oP'))
+    const database = db.current
+    expect(database).toBeInstanceOf(faunadb.Client)
 
-        const { result: db } = renderHook(() => useDatabase('fnADsp759rACEnFhmYqZLU7ESLG5L7fi-wbdCVhi'))
-        const { result: docResult, waitForNextUpdate } = renderHook(() =>
-        useDeleteDocument(db.current, collection, ref)
-      )
+    // Render useDeleteDocument
+    const { result, waitForNextUpdate } = renderHook(() => useDeleteDocument(database))
+    const deleteDocument = await result.current[0]
+    const doc = await result.current[1]
+    const status = await result.current[2]
 
-      expect(docResult.current).toStrictEqual([null, FAUNA_STATUS.NOT_LOADED])
+    expect(deleteDocument).toBeInstanceOf(Function)
+    expect(doc).toBeNull()
+    expect(status).toEqual(FAUNA_STATUS.NOT_LOADED)
 
+    // Trigger GET request
+    act(async () => {
+      deleteDocument('storehouses', '269507137910080018')
+
+      // Changes to LOADING state
       await waitForNextUpdate()
+      expect(doc).toBeNull()
+      expect(status).toEqual(FAUNA_STATUS.LOADING)
 
-      const responseRef = JSON.stringify(docResult.current[0].ref)
-      const status = docResult.current[1]
-  
+      // Resolves with Document and LOADED status
+      await waitForNextUpdate()
+      expect(doc).toBeDefined()
+      expect(doc).toBeInstanceOf(Document)
       expect(status).toEqual(FAUNA_STATUS.LOADED)
-      expect(responseRef).toContain(collection)
-      expect(responseRef).toContain(ref)
     })
-
-    it('fails to delete a document', async () => {
-      const collection = 'customers'
-      const ref = '266450476974735890'
-
-      const { result: db } = renderHook(() => useDatabase('fnADsp759rACEnFhmYqZLU7ESLG5L7fi-wbdCVhi'))
-      const { result: docResult, waitForNextUpdate } = renderHook(() =>
-      useDeleteDocument(db.current, collection, ref)
-    )
-
-    expect(docResult.current).toStrictEqual([null, FAUNA_STATUS.NOT_LOADED])
-
-    await waitForNextUpdate()
-
-    const response = docResult.current[0]
-    const status = docResult.current[1]
-
-    expect(response).toBe(null)
-    expect(status).toEqual(FAUNA_STATUS.ERROR)
   })
-})  
+
+  it('fails to delete document with invalid refId', async () => {
+    // Instantiate access to DB
+    const { result: db } = renderHook(() => useDatabase('fnADrW9uexACE1_GWGovu3My4mXWcm-tgQ3Sp3oP'))
+    const database = db.current
+    expect(database).toBeInstanceOf(faunadb.Client)
+
+    // Render useDeleteDocument
+    const { result, waitForNextUpdate } = renderHook(() => useDeleteDocument(database))
+    const deleteDocument = await result.current[0]
+    const doc = result.current[1]
+    const status = result.current[2]
+
+    act(async () => {
+      deleteDocument('storehouses', '1')
+
+      // Fails to fetch data and resolves to ERROR
+      await waitForNextUpdate()
+      expect(doc).toBeNull()
+      expect(status).toEqual(FAUNA_STATUS.ERROR)
+    })
+  })
+})
