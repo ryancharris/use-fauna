@@ -15,7 +15,7 @@ export default function useGetDocument(
     const request = db.query(q.Get(q.Ref(q.Collection(collectionName), refId)))
 
     request
-      .then(async res => {
+      .then(async (res: object) => {
         setStatus(FAUNA_STATUS.LOADING)
         setDocument((await res) as Document)
         setStatus(FAUNA_STATUS.LOADED)

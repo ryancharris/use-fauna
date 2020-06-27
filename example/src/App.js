@@ -11,8 +11,7 @@ import {
 
 const App = () => {
   const db = useDatabase('fnADrW9uexACE1_GWGovu3My4mXWcm-tgQ3Sp3oP')
-  console.log(db)
-  // const [doc, status] = useGetDocument(db, "orders", "264990427463026195");
+  // console.log(db)
   // const [doc, status] = useCreateDocument(db, "products", {
   //   members: ['trey', 'mike', 'paige', 'fish']
   // })
@@ -21,9 +20,21 @@ const App = () => {
   //   members: ['trey', 'mike']
   // })
 
-  const [docs, status] = useGetAllDocuments(db, 'products')
-  console.log('docs', docs)
+  // const [getDocumentsByCollection, documents, status] = useGetAllDocuments(db, 'storehouses')
+
+  // const [getDocument, doc, status] = useGetDocument(db, 'storehouses', '264990427443102227')
+
+  const [createDocument, doc, status] = useCreateDocument(db, 'storehouses')
+
+  console.log('doc', doc)
   console.log('status', status)
-  return <div>App</div>
+
+  return (
+    <div>
+      {/* <button onClick={() => getDocumentsByCollection()}>Get all docs</button> */}
+      {/* <button onClick={() => getDocument()}>Get single doc</button> */}
+      <button onClick={() => createDocument({ name: 'soulive' })}>Create single doc</button>
+    </div>
+  )
 }
 export default App
