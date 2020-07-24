@@ -1,29 +1,20 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import faunadb from 'faunadb'
 
-import { useFaunaClient } from 'use-fauna'
+import { useFaunaClient, useGetAllDocuments } from 'use-fauna'
 
 function Content() {
-  // const { DatabaseContext } = useDatabase('fnADrW9uexACE1_GWGovu3My4mXWcm-tgQ3Sp3oP')
-  // console.log(DatabaseContext)
-  // const context = useContext(DatabaseContext)
-  // console.log(context)
-  const client: faunadb.Client = useFaunaClient('fnADrW9uexACE1_GWGovu3My4mXWcm-tgQ3Sp3oP')
+  const client: faunadb.Client = useFaunaClient(process.env.REACT_APP_FAUNA_KEY as string)
   console.log('client', client)
 
-  // const DatabaseContext = useDatabase(client)
-  // console.log('DatabaseContext', DatabaseContext)
-  // console.log('DatabaseContext.Provider', DatabaseContext.Provider)
-  // console.log('DatabaseContext', DatabaseContext)
-  // console.log('dbProvider', dbProvider)
-
-  // const [getAllDocuments, allDocs, allDocsStatus] = useGetAllDocuments(client)
+  const [getAllDocuments, allDocs, allDocsStatus] = useGetAllDocuments(client)
   // const [getDocument, singleDoc, singleDocStatus] = useGetDocument(client)
   // const [createDocument, createdDoc, createDocStatus] = useCreateDocument(client)
   // const [deleteDocument, deletedDoc, deleteDocStatus] = useDeleteDocument(client)
   // const [updateDocument, updatedDoc, updateDocStatus] = useUpdateDocument(client)
 
-  // console.log('allDocs', allDocs)
+  console.log('allDocs', allDocs)
+  console.log('allDocsStatus', allDocsStatus)
   // console.log('singleDoc', singleDoc)
   // console.log('createdDoc', createdDoc)
   // console.log('deletedDoc', deletedDoc)
@@ -31,8 +22,8 @@ function Content() {
 
   return (
     <div>
-      {/* <button onClick={() => getAllDocuments('storehouses', 2)}>Get all docs</button>
-      <button onClick={() => getDocument('storehouses', '264990427443102227')}>
+      <button onClick={() => getAllDocuments('storehouses', 2)}>Get all docs</button>
+      {/* <button onClick={() => getDocument('storehouses', '264990427443102227')}>
         Get single doc
       </button>
       <button onClick={() => createDocument('storehouses', { name: 'john mayer' })}>
