@@ -1,23 +1,20 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import faunadb from 'faunadb'
 
-import {
-  useFaunaClient,
-  useGetDocument,
-  useCreateDocument,
-  useDeleteDocument,
-  useUpdateDocument,
-  useGetAllDocuments
-  // useDatabase
-} from 'use-fauna'
+import { useFaunaClient } from 'use-fauna'
 
-function Content(props) {
-  const client = useFaunaClient('fnADrW9uexACE1_GWGovu3My4mXWcm-tgQ3Sp3oP')
+function Content() {
+  // const { DatabaseContext } = useDatabase('fnADrW9uexACE1_GWGovu3My4mXWcm-tgQ3Sp3oP')
+  // console.log(DatabaseContext)
+  // const context = useContext(DatabaseContext)
+  // console.log(context)
+  const client: faunadb.Client = useFaunaClient('fnADrW9uexACE1_GWGovu3My4mXWcm-tgQ3Sp3oP')
   console.log('client', client)
 
-  // const { DatabaseContext, DatabaseProvider } = useDatabase()
+  // const DatabaseContext = useDatabase(client)
   // console.log('DatabaseContext', DatabaseContext)
-  // console.log('DatabaseProvider', DatabaseProvider)
+  // console.log('DatabaseContext.Provider', DatabaseContext.Provider)
+  // console.log('DatabaseContext', DatabaseContext)
   // console.log('dbProvider', dbProvider)
 
   // const [getAllDocuments, allDocs, allDocsStatus] = useGetAllDocuments(client)

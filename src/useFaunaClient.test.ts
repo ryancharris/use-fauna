@@ -1,11 +1,11 @@
 import { renderHook } from '@testing-library/react-hooks'
 import faunadb from 'faunadb'
 
-import useDatabase from './useDatabase'
+import useFaunaClient from './useFaunaClient'
 
-describe('useDatabase', () => {
+describe('useFaunaClient', () => {
   it('returns an instantiated client', () => {
-    const { result } = renderHook(() => useDatabase('123'))
+    const { result } = renderHook(() => useFaunaClient('123'))
 
     expect(result.current).toBeInstanceOf(faunadb.Client)
     expect(result.current.query).toBeInstanceOf(Function)
