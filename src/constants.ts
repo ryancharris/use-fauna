@@ -4,3 +4,11 @@ export const FAUNA_STATUS = {
   LOADED: 'loaded',
   ERROR: 'error'
 }
+
+export enum FaunaSchemas {
+  Collections,
+  Databases,
+  Documents,
+  Functions,
+  Indexes
+}
