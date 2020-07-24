@@ -5,10 +5,10 @@ export const FAUNA_STATUS = {
   ERROR: 'error'
 }
 
-export enum FaunaSchemas {
-  Collections,
-  Databases,
-  Documents,
-  Functions,
-  Indexes
+export const FaunaSchemas = {
+  Collections: 'collections',
+  Databases: 'databases',
+  Documents: 'documents',
+  Functions: 'functions',
+  Indexes: 'indexes'
 }
