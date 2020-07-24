@@ -3,13 +3,15 @@ import faunadb from 'faunadb'
 
 import { FAUNA_STATUS } from './constants'
 
-import useDatabase from './useDatabase'
+import useFaunaClient from './useFaunaClient'
 import useGetDocument from './useGetDocument'
 
 describe('useGetDocument', () => {
   it('gets document successfully', async () => {
     // Instantiate access to DB
-    const { result: db } = renderHook(() => useDatabase('fnADrW9uexACE1_GWGovu3My4mXWcm-tgQ3Sp3oP'))
+    const { result: db } = renderHook(() =>
+      useFaunaClient('fnADrW9uexACE1_GWGovu3My4mXWcm-tgQ3Sp3oP')
+    )
     const database = db.current
     expect(database).toBeInstanceOf(faunadb.Client)
 
@@ -42,7 +44,9 @@ describe('useGetDocument', () => {
 
   it('fails with the wrong refId', async () => {
     // Instantiate access to DB
-    const { result: db } = renderHook(() => useDatabase('fnADrW9uexACE1_GWGovu3My4mXWcm-tgQ3Sp3oP'))
+    const { result: db } = renderHook(() =>
+      useFaunaClient('fnADrW9uexACE1_GWGovu3My4mXWcm-tgQ3Sp3oP')
+    )
     const database = db.current
     expect(database).toBeInstanceOf(faunadb.Client)
 
