@@ -5,6 +5,7 @@ import useDeleteDocument from './useDeleteDocument'
 import useUpdateDocument from './useUpdateDocument'
 import useGetAllDocuments from './useGetAllDocuments'
 import useFaunaClient from './useFaunaClient'
+import useGetAll from './useGetAll'
 
 // export { useDatabase }
 export { useGetDocument }
@@ -13,3 +14,4 @@ export { useDeleteDocument }
 export { useUpdateDocument }
 export { useGetAllDocuments }
 export { useFaunaClient }
+export { useGetAll }
