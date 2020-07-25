@@ -31,7 +31,6 @@ function Content() {
           id="schema"
           value={getAllInputValue}
           onChange={e => {
-            console.log(e)
             setGetAllInputValue(e.target.value)
           }}
           defaultValue={0}
@@ -44,7 +43,6 @@ function Content() {
         </select>
         <button
           onClick={() => {
-            console.log('getAllInputValue', getAllInputValue)
             getAllInputValue === 'documents'
               ? getAll(getAllInputValue, collection)
               : getAll(getAllInputValue)
