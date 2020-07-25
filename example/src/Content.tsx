@@ -2,15 +2,7 @@ import React, { useState } from 'react'
 import faunadb from 'faunadb'
 
 import { useFaunaClient, useGetAll } from 'use-fauna'
-import {
-  Collection,
-  Database,
-  Document,
-  Function as FaunaFunction,
-  Index
-} from '../../src/types/fauna'
-
-type DataItem = Collection | Database | Document | FaunaFunction | Index
+import { DataItem } from '../../src/types/fauna'
 
 function Content() {
   const client: faunadb.Client = useFaunaClient(process.env.REACT_APP_FAUNA_KEY as string)
@@ -21,6 +13,9 @@ function Content() {
   const [getAll, data = null, status] = useGetAll(client)
   console.log('data', data)
   console.log('status', status)
+
+  // useGet
+  // const x = useGet()
 
   return (
     <div>
