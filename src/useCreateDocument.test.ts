@@ -1,6 +1,6 @@
 import { renderHook, act } from '@testing-library/react-hooks'
 
-import { FAUNA_STATUS } from './constants'
+import { FaunaStatus } from './constants'
 
 import useFaunaClient from './useFaunaClient'
 import useCreateDocument from './useCreateDocument'
@@ -19,7 +19,7 @@ describe('useCreateDocument', () => {
     const status = docResult.current[2]
     expect(createDocument).toBeInstanceOf(Function)
     expect(doc).toBeNull()
-    expect(status).toEqual(FAUNA_STATUS.NOT_LOADED)
+    expect(status).toEqual(FaunaStatus.NOT_LOADED)
 
     act(async () => {
       // Trigger a request
@@ -29,13 +29,13 @@ describe('useCreateDocument', () => {
       // Changes to LOADING state
       await waitForNextUpdate()
       expect(doc).toBeNull()
-      expect(status).toEqual(FAUNA_STATUS.LOADING)
+      expect(status).toEqual(FaunaStatus.LOADING)
 
       // Resolves with Document and LOADED status
       await waitForNextUpdate()
       expect(doc).toBeDefined()
       expect(doc).toBeInstanceOf(Document)
-      expect(status).toEqual(FAUNA_STATUS.LOADED)
+      expect(status).toEqual(FaunaStatus.LOADED)
     })
   })
 
@@ -56,7 +56,7 @@ describe('useCreateDocument', () => {
 
       await waitForNextUpdate()
       expect(doc).toBeNull()
-      expect(status).toBe(FAUNA_STATUS.ERROR)
+      expect(status).toBe(FaunaStatus.ERROR)
     })
   })
 })

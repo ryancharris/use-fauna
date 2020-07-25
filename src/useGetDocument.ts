@@ -1,10 +1,10 @@
 import { useState, useCallback } from 'react'
 import faunadb from 'faunadb'
 const { query: q } = faunadb
-import { FAUNA_STATUS } from './constants'
+import { FaunaStatus } from './constants'
 
 export default function useGetDocument(db: faunadb.Client): [Function, null | Document, string] {
-  const [status, setStatus] = useState<string>(FAUNA_STATUS.NOT_LOADED)
+  const [status, setStatus] = useState<string>(FaunaStatus.NOT_LOADED)
   const [document, setDocument] = useState<null | Document>(null)
 
   const getDocument = useCallback((collectionName: string, refId: string): void => {
@@ -12,13 +12,13 @@ export default function useGetDocument(db: faunadb.Client): [Function, null | Do
 
     request
       .then(async (res: object) => {
-        setStatus(FAUNA_STATUS.LOADING)
+        setStatus(FaunaStatus.LOADING)
         setDocument((await res) as Document)
-        setStatus(FAUNA_STATUS.LOADED)
+        setStatus(FaunaStatus.LOADED)
       })
       .catch(err => {
         console.error(`[fauna-hooks] ${err}`)
-        setStatus(FAUNA_STATUS.ERROR)
+        setStatus(FaunaStatus.ERROR)
       })
   }, [])
 
