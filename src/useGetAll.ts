@@ -14,8 +14,6 @@ function createSchemaQuery(
   client: faunadb.Client,
   scope: string = ''
 ): Promise<QueryResponse> | null {
-  console.log('scope', scope)
-
   switch (schema) {
     case FaunaSchemas.Collections:
       return client.query(
