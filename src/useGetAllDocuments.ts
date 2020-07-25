@@ -1,7 +1,7 @@
 import { useState, useCallback } from 'react'
 import faunadb from 'faunadb'
 const { query: q } = faunadb
-import { FAUNA_STATUS } from './constants'
+import { FaunaStatus } from './constants'
 
 interface GetAllDocumentsResponse {
   data?: Array<Document>
@@ -11,7 +11,7 @@ export default function useGetAllDocuments(
   db: faunadb.Client
 ): [Function, null | Array<Document>, string] {
   const [documents, setDocuments] = useState<null | Array<Document>>(null)
-  const [status, setStatus] = useState<string>(FAUNA_STATUS.NOT_LOADED)
+  const [status, setStatus] = useState<string>(FaunaStatus.NOT_LOADED)
 
   const getAllDocuments = useCallback((collectionName: string, resultSize?: number): void => {
     const request = db.query(
@@ -23,13 +23,13 @@ export default function useGetAllDocuments(
 
     request
       .then(async (res: GetAllDocumentsResponse) => {
-        setStatus(FAUNA_STATUS.LOADING)
+        setStatus(FaunaStatus.LOADING)
         setDocuments((await res.data) as Array<Document>)
-        setStatus(FAUNA_STATUS.LOADED)
+        setStatus(FaunaStatus.LOADED)
       })
       .catch(err => {
         console.error(`[fauna-hooks] ${err}`)
-        setStatus(FAUNA_STATUS.ERROR)
+        setStatus(FaunaStatus.ERROR)
       })
   }, [])
 

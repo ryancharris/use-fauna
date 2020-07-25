@@ -1,4 +1,4 @@
-export const FAUNA_STATUS = {
+export const FaunaStatus = {
   NOT_LOADED: 'not-loaded',
   LOADING: 'loading',
   LOADED: 'loaded',

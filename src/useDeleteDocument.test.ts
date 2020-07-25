@@ -1,7 +1,7 @@
 import { renderHook, act } from '@testing-library/react-hooks'
 import faunadb from 'faunadb'
 
-import { FAUNA_STATUS } from './constants'
+import { FaunaStatus } from './constants'
 
 import useFaunaClient from './useFaunaClient'
 import useDeleteDocument from './useDeleteDocument'
@@ -23,7 +23,7 @@ describe('useDeleteDocument', () => {
 
     expect(deleteDocument).toBeInstanceOf(Function)
     expect(doc).toBeNull()
-    expect(status).toEqual(FAUNA_STATUS.NOT_LOADED)
+    expect(status).toEqual(FaunaStatus.NOT_LOADED)
 
     // Trigger GET request
     act(async () => {
@@ -32,13 +32,13 @@ describe('useDeleteDocument', () => {
       // Changes to LOADING state
       await waitForNextUpdate()
       expect(doc).toBeNull()
-      expect(status).toEqual(FAUNA_STATUS.LOADING)
+      expect(status).toEqual(FaunaStatus.LOADING)
 
       // Resolves with Document and LOADED status
       await waitForNextUpdate()
       expect(doc).toBeDefined()
       expect(doc).toBeInstanceOf(Document)
-      expect(status).toEqual(FAUNA_STATUS.LOADED)
+      expect(status).toEqual(FaunaStatus.LOADED)
     })
   })
 
@@ -62,7 +62,7 @@ describe('useDeleteDocument', () => {
       // Fails to fetch data and resolves to ERROR
       await waitForNextUpdate()
       expect(doc).toBeNull()
-      expect(status).toEqual(FAUNA_STATUS.ERROR)
+      expect(status).toEqual(FaunaStatus.ERROR)
     })
   })
 })
