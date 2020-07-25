@@ -30,13 +30,14 @@ function Content() {
   // console.log('updatedDoc', updatedDoc)
 
   const [getAllInputValue, setGetAllInputValue] = useState('collections')
+  const [collection, setCollection] = useState('')
   const [getAll, data = null, status] = useGetAll(client)
   console.log('data', data)
   console.log('status', status)
 
   return (
     <div>
-      <fieldset>
+      <div>
         <p>Get all of a schema type</p>
         <select
           name="schema"
@@ -57,18 +58,33 @@ function Content() {
         <button
           onClick={() => {
             console.log('getAllInputValue', getAllInputValue)
-            getAll(getAllInputValue)
+            getAllInputValue === 'documents'
+              ? getAll(getAllInputValue, collection)
+              : getAll(getAllInputValue)
           }}
         >
           GetAll
         </button>
+        {getAllInputValue === 'documents' && (
+          <div>
+            <label htmlFor="collection">Collection name</label>
+            <input
+              id="collection"
+              value={collection}
+              onChange={e => {
+                console.log(e.target.value)
+                setCollection(e.target.value)
+              }}
+            />
+          </div>
+        )}
 
-        {getAllInputValue && <div>Showing {getAllInputValue}</div>}
+        {getAllInputValue && data && <div>Showing {getAllInputValue}</div>}
         {data &&
           data.map((item: DataItem) => {
             return <p>{`${item.ref}`}</p>
           })}
-      </fieldset>
+      </div>
       {/* <button onClick={() => getAllDocuments('storehouses', 2)}>Get all docs</button> */}
       {/* <button onClick={() => getDocument('storehouses', '264990427443102227')}>
         Get single doc
