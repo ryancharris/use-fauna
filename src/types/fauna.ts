@@ -1,6 +1,7 @@
 export interface Ref {
   id: string
 }
+
 export interface Collection {
   data: object
   history_days: number

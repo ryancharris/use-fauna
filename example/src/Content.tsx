@@ -59,7 +59,6 @@ function Content() {
               id="collection"
               value={collection}
               onChange={e => {
-                console.log(e.target.value)
                 setCollection(e.target.value)
               }}
             />

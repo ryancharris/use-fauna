@@ -3,7 +3,7 @@ import faunadb, { query as q } from 'faunadb'
 import { FaunaSchemas, FaunaStatus } from './constants'
 import { Collection, Database, Document, Function as FaunaFunction, Index } from './types/fauna'
 
-type SchemaArray = Collection[] | Database[] | Document[] | FaunaFunction[] | Index[]
+export type SchemaArray = Collection[] & Database[] & Document[] & FaunaFunction[] & Index[]
 
 type QueryResponse = {
   data: SchemaArray
