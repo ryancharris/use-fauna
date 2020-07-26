@@ -16,6 +16,7 @@ npm install --save use-fauna
 - `useUpdateDocument`
 - `useDeleteDocument`
 - `useGetAll`
+- `useGet`
 
 ---
 

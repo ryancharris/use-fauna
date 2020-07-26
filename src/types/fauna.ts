@@ -42,3 +42,5 @@ export interface Index {
   ts: number
   unique: boolean
 }
+
+export type DataItem = Collection | Database | Document | Function | Index
