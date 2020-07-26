@@ -120,6 +120,11 @@ function Content() {
         >
           Get
         </button>
+        {getData && (
+          <div>
+            <code>{JSON.stringify(getData)}</code>
+          </div>
+        )}
       </div>
     </div>
   )
