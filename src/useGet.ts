@@ -7,16 +7,17 @@ import { FaunaSchema, FaunaStatus } from './constants'
 function createQuery(
   schema: string,
   client: faunadb.Client,
-  scope: string
+  scope: string,
+  refId: string = ''
 ): null | Promise<DataItem> {
+  console.log(refId)
   switch (schema) {
     case FaunaSchema.Collection:
       return client.query(q.Get(q.Collection(scope)))
     case FaunaSchema.Database:
       return client.query(q.Get(q.Database(scope)))
     case FaunaSchema.Document:
-      console.log('wants a document')
-      break
+      return client.query(q.Get(q.Ref(q.Collection(scope), refId)))
     case FaunaSchema.Function:
       return client.query(q.Get(q.Function(scope)))
     case FaunaSchema.Index:
@@ -31,8 +32,8 @@ export default function useGet(client: faunadb.Client): [Function, null | DataIt
   const [data, setData] = useState<null | DataItem>(null)
   const [status, setStatus] = useState(FaunaStatus.NOT_LOADED)
 
-  const get = useCallback((schema: string, scope: string) => {
-    const fqlQuery = createQuery(schema, client, scope)
+  const get = useCallback((schema: string, scope: string, refId?: string) => {
+    const fqlQuery = createQuery(schema, client, scope, refId)
 
     if (fqlQuery) {
       console.log('we have a query')

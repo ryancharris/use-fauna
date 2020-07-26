@@ -18,6 +18,7 @@ function Content() {
   const [getFunction, getData, getStatus] = useGet(client)
   const [getSchema, setGetSchema] = useState('collection')
   const [getRefId, setGetRefId] = useState('')
+  const [useGetRefId, setUseGetRefId] = useState('')
   console.log('getFunction', getFunction)
   console.log('getData', getData)
   console.log('getStatus', getStatus)
@@ -75,7 +76,27 @@ function Content() {
 
       {/* useGet */}
       <div>
-        <input type="getRef" value={getRefId} onChange={e => setGetRefId(e.target.value)} />
+        <div>
+          <label htmlFor="getRef">
+            {getSchema !== 'document' ? `${getSchema}` : 'collection'} name
+          </label>
+          <input
+            id="getRef"
+            type="getRef"
+            value={getRefId}
+            onChange={e => setGetRefId(e.target.value)}
+          />
+          {getSchema === 'document' && (
+            <>
+              <label htmlFor="useGetRefId">Document RefId</label>
+              <input
+                id="useGetRefId"
+                value={useGetRefId}
+                onChange={e => setUseGetRefId(e.target.value)}
+              />
+            </>
+          )}
+        </div>
         <select
           name="getSchema"
           id="getSchema"
@@ -94,7 +115,7 @@ function Content() {
         <button
           onClick={e => {
             e.preventDefault()
-            getFunction(getSchema, getRefId)
+            getFunction(getSchema, getRefId, useGetRefId)
           }}
         >
           Get
