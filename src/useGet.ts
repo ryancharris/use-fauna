@@ -10,7 +10,6 @@ function createQuery(
   scope: string,
   refId: string = ''
 ): null | Promise<DataItem> {
-  console.log(refId)
   switch (schema) {
     case FaunaSchema.Collection:
       return client.query(q.Get(q.Collection(scope)))
@@ -28,7 +27,6 @@ function createQuery(
 }
 
 export default function useGet(client: faunadb.Client): [Function, null | DataItem, string] {
-  console.log(client)
   const [data, setData] = useState<null | DataItem>(null)
   const [status, setStatus] = useState(FaunaStatus.NOT_LOADED)
 
@@ -36,7 +34,6 @@ export default function useGet(client: faunadb.Client): [Function, null | DataIt
     const fqlQuery = createQuery(schema, client, scope, refId)
 
     if (fqlQuery) {
-      console.log('we have a query')
       fqlQuery
         .then((res: DataItem) => {
           setStatus(FaunaStatus.LOADING)
