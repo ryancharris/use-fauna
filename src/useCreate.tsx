@@ -24,7 +24,8 @@ type CreateParams = CollectionCreateParams | DocumentCreateParams
 function createQuery(
   schema: string,
   client: faunadb.Client,
-  params: CreateParams
+  params: CreateParams,
+  scope: string = ''
 ): null | Promise<DataItem> {
   switch (schema) {
     case FaunaSchema.Collection:
@@ -32,6 +33,7 @@ function createQuery(
     case FaunaSchema.Database:
       return client.query(q.CreateDatabase(params))
     case FaunaSchema.Document:
+      return client.query(q.Create(q.Collection(scope), params))
     case FaunaSchema.Function:
     case FaunaSchema.Index:
       console.log('schema', schema)
@@ -45,8 +47,8 @@ export default function useCreate(client: faunadb.Client): [Function, null | Dat
   const [data, setData] = useState<null | DataItem>(null)
   const [status, setStatus] = useState(FaunaStatus.NOT_LOADED)
 
-  const create = useCallback((schema: string, params: object) => {
-    const fqlQuery = createQuery(schema, client, params)
+  const create = useCallback((schema: string, params: CreateParams, scope?: string) => {
+    const fqlQuery = createQuery(schema, client, params, scope)
 
     if (fqlQuery) {
       fqlQuery
@@ -62,6 +64,5 @@ export default function useCreate(client: faunadb.Client): [Function, null | Dat
     }
   }, [])
 
-  console.log(client)
   return [create, data, status]
 }

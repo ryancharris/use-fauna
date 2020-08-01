@@ -11,6 +11,7 @@ function UseCreateForm(props: UseCreateFormProps) {
   const [ttlDays, setTtlDays] = useState<number>(30)
   const [apiVersion, setApiVersion] = useState<string>('2.12')
   const [dbPriority, setDbPriority] = useState<number>(1)
+  const [collection, setCollection] = useState<string>('')
 
   // TODO: Add JSON editor for object params
   // const [data, setData] = useState({})
@@ -29,6 +30,10 @@ function UseCreateForm(props: UseCreateFormProps) {
           name: name,
           api_version: apiVersion,
           priority: dbPriority
+        }
+      case 'document':
+        return {
+          name: name
         }
 
       default:
@@ -110,10 +115,25 @@ function UseCreateForm(props: UseCreateFormProps) {
         </>
       )}
 
+      {/* Document */}
+      {schema === 'document' && (
+        <>
+          <fieldset>
+            <label htmlFor="collection">collection:</label>
+            <input
+              type="text"
+              id="collection"
+              value={collection}
+              onChange={e => setCollection(e.target.value)}
+            />
+          </fieldset>
+        </>
+      )}
+
       <button
         onClick={e => {
           e.preventDefault()
-          props.createFunction(schema, createParamsObject())
+          props.createFunction(schema, createParamsObject(), collection)
         }}
       >
         Create {schema}
