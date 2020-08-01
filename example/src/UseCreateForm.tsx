@@ -9,10 +9,13 @@ function UseCreateForm(props: UseCreateFormProps) {
   const [name, setName] = useState('')
   const [historyDays, setHistoryDays] = useState<number>(30)
   const [ttlDays, setTtlDays] = useState<number>(30)
+  const [apiVersion, setApiVersion] = useState<number>(3)
+  const [dbPriority, setDbPriority] = useState<number>(1)
+
+  // TODO: Add JSON editor for object params
   // const [data, setData] = useState({})
   // const [permissions, setPermissions] = useState({})
 
-  // TODO: Add JSON editor for object params
   return (
     <>
       <h2>useCreate</h2>
@@ -56,6 +59,32 @@ function UseCreateForm(props: UseCreateFormProps) {
               id="ttlDays"
               value={ttlDays}
               onChange={e => setTtlDays(parseInt(e.target.value))}
+            />
+          </fieldset>
+        </>
+      )}
+
+      {/* Database */}
+      {schema === 'database' && (
+        <>
+          <fieldset>
+            <label htmlFor="apiVersion">api_version:</label>
+            <input
+              type="text"
+              id="apiVersion"
+              value={apiVersion}
+              onChange={e => setApiVersion(parseInt(e.target.value))}
+            />
+          </fieldset>
+          <fieldset>
+            <label htmlFor="dbPriority">ttl_days:</label>
+            <input
+              type="number"
+              min="1"
+              max="500"
+              id="dbPriority"
+              value={dbPriority}
+              onChange={e => setDbPriority(parseInt(e.target.value))}
             />
           </fieldset>
         </>
