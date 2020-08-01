@@ -4,6 +4,8 @@ import faunadb from 'faunadb'
 import { useFaunaClient, useGetAll, useGet, useCreate } from 'use-fauna'
 import { DataItem } from '../../src/types/fauna'
 
+import UseCreateForm from './UseCreateForm'
+
 function Content() {
   const client: faunadb.Client = useFaunaClient(process.env.REACT_APP_FAUNA_KEY as string)
 
@@ -25,8 +27,6 @@ function Content() {
 
   // useCreate
   const [createFunction, createData, createStatus] = useCreate(client)
-  const [createSchema, setCreateSchema] = useState('collection')
-  const [createSchemaName, setCreateSchemaName] = useState('')
   console.log('createFunction', createFunction)
   console.log('createData', createData)
   console.log('createStatus', createStatus)
@@ -139,48 +139,12 @@ function Content() {
       <hr />
 
       {/* useCreate */}
-      <div>
-        <h2>useCreate</h2>
+      <UseCreateForm createFunction={createFunction} />
+      {createData && (
         <div>
-          <select
-            name="createSchema"
-            id="createSchema"
-            value={createSchema}
-            onChange={e => {
-              setCreateSchema(e.target.value)
-            }}
-            defaultValue={0}
-          >
-            <option value="collection">collection</option>
-            <option value="database">database</option>
-            <option value="document">document</option>
-            <option value="function">function</option>
-            <option value="index">index</option>
-          </select>
-          <div>
-            <label htmlFor="createSchemaName">Name:</label>
-            <input
-              type="text"
-              id="createSchemaName"
-              value={createSchemaName}
-              onChange={e => setCreateSchemaName(e.target.value)}
-            />
-            <button
-              onClick={e => {
-                e.preventDefault()
-                createFunction(createSchema, { name: createSchemaName })
-              }}
-            >
-              Create
-            </button>
-            {createData && (
-              <div>
-                <code>{JSON.stringify(createData)}</code>
-              </div>
-            )}
-          </div>
+          <code>{JSON.stringify(createData)}</code>
         </div>
-      </div>
+      )}
     </div>
   )
 }

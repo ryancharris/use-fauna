@@ -2,13 +2,13 @@ import { useCallback, useState } from 'react'
 import faunadb, { query as q } from 'faunadb'
 
 import { FaunaSchema, FaunaStatus } from './constants'
-// import { DataItem } from './types/fauna'
+import { DataItem } from './types/fauna'
 
 function createQuery(
   schema: string,
   client: faunadb.Client,
   params: object
-): null | Promise<object> {
+): null | Promise<DataItem> {
   switch (schema) {
     case FaunaSchema.Collection:
       return client.query(q.CreateCollection(params))
@@ -23,8 +23,8 @@ function createQuery(
   return null
 }
 
-export default function useCreate(client: faunadb.Client): [Function, null | object, string] {
-  const [data, setData] = useState<null | object>(null)
+export default function useCreate(client: faunadb.Client): [Function, null | DataItem, string] {
+  const [data, setData] = useState<null | DataItem>(null)
   const [status, setStatus] = useState(FaunaStatus.NOT_LOADED)
 
   const create = useCallback((schema: string, params: object) => {
@@ -32,7 +32,7 @@ export default function useCreate(client: faunadb.Client): [Function, null | obj
 
     if (fqlQuery) {
       fqlQuery
-        .then(res => {
+        .then((res: DataItem) => {
           setStatus(FaunaStatus.LOADING)
           setData(res)
           setStatus(FaunaStatus.LOADED)
