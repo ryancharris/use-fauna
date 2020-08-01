@@ -12,14 +12,22 @@ interface CollectionCreateParams {
   permission?: object
 }
 
-interface DocumentCreateParams {
+interface DatabaseCreateParams {
   name: string
   data?: object
   api_version?: string
   priority?: number
 }
 
-type CreateParams = CollectionCreateParams | DocumentCreateParams
+interface DocumentCreateParams {
+  name: string
+  data?: object
+  delegate?: object
+  credentials?: object
+  ttl: Date
+}
+
+type CreateParams = CollectionCreateParams | DatabaseCreateParams | DocumentCreateParams
 
 function createQuery(
   schema: string,
