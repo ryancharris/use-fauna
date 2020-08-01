@@ -11,20 +11,22 @@ function Content() {
   const [getAllInputValue, setGetAllInputValue] = useState('collections')
   const [collection, setCollection] = useState('')
   const [getAll, data = null, status] = useGetAll(client)
-  console.log('data', data)
-  console.log('status', status)
+  // console.log('data', data)
+  // console.log('status', status)
 
   // useGet
   const [getFunction, getData, getStatus] = useGet(client)
   const [getSchema, setGetSchema] = useState('collection')
   const [getRefId, setGetRefId] = useState('')
   const [useGetRefId, setUseGetRefId] = useState('')
-  console.log('getFunction', getFunction)
-  console.log('getData', getData)
-  console.log('getStatus', getStatus)
+  // console.log('getFunction', getFunction)
+  // console.log('getData', getData)
+  // console.log('getStatus', getStatus)
 
   // useCreate
   const [createFunction, createData, createStatus] = useCreate(client)
+  const [createSchema, setCreateSchema] = useState('collection')
+  const [createSchemaName, setCreateSchemaName] = useState('')
   console.log('createFunction', createFunction)
   console.log('createData', createData)
   console.log('createStatus', createStatus)
@@ -33,7 +35,7 @@ function Content() {
     <div>
       {/* useGetAll */}
       <div>
-        <p>Get all of a schema type</p>
+        <h2>useGetAll</h2>
         <select
           name="schema"
           id="schema"
@@ -82,6 +84,7 @@ function Content() {
 
       {/* useGet */}
       <div>
+        <h2>useGet</h2>
         <div>
           <label htmlFor="getRef">
             {getSchema !== 'document' ? `${getSchema}` : 'collection'} name
@@ -131,6 +134,52 @@ function Content() {
             <code>{JSON.stringify(getData)}</code>
           </div>
         )}
+      </div>
+
+      <hr />
+
+      {/* useCreate */}
+      <div>
+        <h2>useCreate</h2>
+        <div>
+          <select
+            name="createSchema"
+            id="createSchema"
+            value={createSchema}
+            onChange={e => {
+              setCreateSchema(e.target.value)
+            }}
+            defaultValue={0}
+          >
+            <option value="collection">collection</option>
+            <option value="database">database</option>
+            <option value="document">document</option>
+            <option value="function">function</option>
+            <option value="index">index</option>
+          </select>
+          <div>
+            <label htmlFor="createSchemaName">Name:</label>
+            <input
+              type="text"
+              id="createSchemaName"
+              value={createSchemaName}
+              onChange={e => setCreateSchemaName(e.target.value)}
+            />
+            <button
+              onClick={e => {
+                e.preventDefault()
+                createFunction(createSchema, { name: createSchemaName })
+              }}
+            >
+              Create
+            </button>
+            {createData && (
+              <div>
+                <code>{JSON.stringify(createData)}</code>
+              </div>
+            )}
+          </div>
+        </div>
       </div>
     </div>
   )
