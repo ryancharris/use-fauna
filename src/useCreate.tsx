@@ -4,10 +4,27 @@ import faunadb, { query as q } from 'faunadb'
 import { FaunaSchema, FaunaStatus } from './constants'
 import { DataItem } from './types/fauna'
 
+interface CollectionCreateParams {
+  name: string
+  data?: object
+  history_days?: number
+  ttl_days?: number
+  permission?: object
+}
+
+interface DocumentCreateParams {
+  name: string
+  data?: object
+  api_version?: string
+  priority?: number
+}
+
+type CreateParams = CollectionCreateParams | DocumentCreateParams
+
 function createQuery(
   schema: string,
   client: faunadb.Client,
-  params: object
+  params: CreateParams
 ): null | Promise<DataItem> {
   switch (schema) {
     case FaunaSchema.Collection:
