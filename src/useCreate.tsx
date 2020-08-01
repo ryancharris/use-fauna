@@ -13,6 +13,7 @@ function createQuery(
     case FaunaSchema.Collection:
       return client.query(q.CreateCollection(params))
     case FaunaSchema.Database:
+      return client.query(q.CreateDatabase(params))
     case FaunaSchema.Document:
     case FaunaSchema.Function:
     case FaunaSchema.Index:

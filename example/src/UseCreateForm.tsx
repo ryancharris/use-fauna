@@ -9,12 +9,32 @@ function UseCreateForm(props: UseCreateFormProps) {
   const [name, setName] = useState('')
   const [historyDays, setHistoryDays] = useState<number>(30)
   const [ttlDays, setTtlDays] = useState<number>(30)
-  const [apiVersion, setApiVersion] = useState<number>(3)
+  const [apiVersion, setApiVersion] = useState<string>('2.12')
   const [dbPriority, setDbPriority] = useState<number>(1)
 
   // TODO: Add JSON editor for object params
   // const [data, setData] = useState({})
   // const [permissions, setPermissions] = useState({})
+
+  const createParamsObject = () => {
+    switch (schema) {
+      case 'collection':
+        return {
+          name: name,
+          history_days: historyDays,
+          ttl_days: ttlDays
+        }
+      case 'database':
+        return {
+          name: name,
+          api_version: apiVersion,
+          priority: dbPriority
+        }
+
+      default:
+        break
+    }
+  }
 
   return (
     <>
@@ -73,11 +93,11 @@ function UseCreateForm(props: UseCreateFormProps) {
               type="text"
               id="apiVersion"
               value={apiVersion}
-              onChange={e => setApiVersion(parseInt(e.target.value))}
+              onChange={e => setApiVersion(e.target.value)}
             />
           </fieldset>
           <fieldset>
-            <label htmlFor="dbPriority">ttl_days:</label>
+            <label htmlFor="dbPriority">priority:</label>
             <input
               type="number"
               min="1"
@@ -93,11 +113,7 @@ function UseCreateForm(props: UseCreateFormProps) {
       <button
         onClick={e => {
           e.preventDefault()
-          props.createFunction(schema, {
-            name: name,
-            history_days: historyDays,
-            ttl_days: ttlDays
-          })
+          props.createFunction(schema, createParamsObject())
         }}
       >
         Create {schema}
