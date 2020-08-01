@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import faunadb from 'faunadb'
 
-import { useFaunaClient, useGetAll, useGet } from 'use-fauna'
+import { useFaunaClient, useGetAll, useGet, useCreate } from 'use-fauna'
 import { DataItem } from '../../src/types/fauna'
 
 function Content() {
@@ -22,6 +22,12 @@ function Content() {
   console.log('getFunction', getFunction)
   console.log('getData', getData)
   console.log('getStatus', getStatus)
+
+  // useCreate
+  const [createFunction, createData, createStatus] = useCreate(client)
+  console.log('createFunction', createFunction)
+  console.log('createData', createData)
+  console.log('createStatus', createStatus)
 
   return (
     <div>

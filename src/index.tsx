@@ -5,6 +5,7 @@ import useUpdateDocument from './useUpdateDocument'
 import useFaunaClient from './useFaunaClient'
 import useGetAll from './useGetAll'
 import useGet from './useGet'
+import useCreate from './useCreate'
 
 // export { useDatabase }
 export { useCreateDocument }
@@ -13,3 +14,4 @@ export { useUpdateDocument }
 export { useFaunaClient }
 export { useGetAll }
 export { useGet }
+export { useCreate }
