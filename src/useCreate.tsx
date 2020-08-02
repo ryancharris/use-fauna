@@ -27,7 +27,38 @@ interface DocumentCreateParams {
   ttl: Date
 }
 
-type CreateParams = CollectionCreateParams | DatabaseCreateParams | DocumentCreateParams
+interface IndexCreateParams {
+  name: string
+  data?: object
+  source: Array<faunadb.ExprArg>
+  terms?: any[]
+  values?: any[]
+  unique?: boolean
+  serialized?: boolean
+  permissions?: object
+}
+
+type CreateParams =
+  | CollectionCreateParams
+  | DatabaseCreateParams
+  | DocumentCreateParams
+  | IndexCreateParams
+
+function createIndexParams(params: IndexCreateParams): CreateParams {
+  console.log('params', params)
+  console.log({
+    ...params,
+    source: params.source.map(source => q.Collection(source))
+  })
+  return {
+    ...params,
+    source: params.source.map(source => q.Collection(source)),
+    // terms: params.terms ? params.terms.map(term => new faunadb.Expr(term)) : params.terms,
+    // values: params.values ? params.values.map(value => new faunadb.Expr(value)) : params.values
+    terms: [null],
+    values: [null]
+  }
+}
 
 function createQuery(
   schema: string,
@@ -44,7 +75,7 @@ function createQuery(
       return client.query(q.Create(q.Collection(scope), params))
     case FaunaSchema.Function:
     case FaunaSchema.Index:
-      console.log('schema', schema)
+      return client.query(q.CreateIndex(createIndexParams(params as IndexCreateParams)))
       break
   }
 
