@@ -2,10 +2,7 @@ import { useState, useCallback } from 'react'
 import faunadb, { query as q } from 'faunadb'
 
 import { DataItem } from './types/fauna'
-import {
-  // FaunaSchema,
-  FaunaStatus
-} from './constants'
+import { FaunaStatus } from './constants'
 
 function createDeleteQuery(
   client: faunadb.Client,
