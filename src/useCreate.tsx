@@ -45,16 +45,13 @@ type CreateParams =
   | IndexCreateParams
 
 function createIndexParams(params: IndexCreateParams): CreateParams {
-  console.log('params', params)
-  console.log({
-    ...params,
-    source: params.source.map(source => q.Collection(source))
-  })
+  // TODO: Figure out how to properly construct Term and Values
+  // const termsParam = params.terms?.length ? params.terms.map(term => term) : [null]
+  // const valuesParam = params.values?.length ? params.values.map(value => value) : [null]
+
   return {
     ...params,
     source: params.source.map(source => q.Collection(source)),
-    // terms: params.terms ? params.terms.map(term => new faunadb.Expr(term)) : params.terms,
-    // values: params.values ? params.values.map(value => new faunadb.Expr(value)) : params.values
     terms: [null],
     values: [null]
   }
