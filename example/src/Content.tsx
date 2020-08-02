@@ -1,8 +1,10 @@
 import React, { useState } from 'react'
 import faunadb from 'faunadb'
 
-import { useFaunaClient, useGetAll, useGet } from 'use-fauna'
+import { useFaunaClient, useGetAll, useGet, useCreate } from 'use-fauna'
 import { DataItem } from '../../src/types/fauna'
+
+import UseCreateForm from './UseCreateForm'
 
 function Content() {
   const client: faunadb.Client = useFaunaClient(process.env.REACT_APP_FAUNA_KEY as string)
@@ -11,23 +13,29 @@ function Content() {
   const [getAllInputValue, setGetAllInputValue] = useState('collections')
   const [collection, setCollection] = useState('')
   const [getAll, data = null, status] = useGetAll(client)
-  console.log('data', data)
-  console.log('status', status)
+  // console.log('data', data)
+  // console.log('status', status)
 
   // useGet
   const [getFunction, getData, getStatus] = useGet(client)
   const [getSchema, setGetSchema] = useState('collection')
   const [getRefId, setGetRefId] = useState('')
   const [useGetRefId, setUseGetRefId] = useState('')
-  console.log('getFunction', getFunction)
-  console.log('getData', getData)
-  console.log('getStatus', getStatus)
+  // console.log('getFunction', getFunction)
+  // console.log('getData', getData)
+  // console.log('getStatus', getStatus)
+
+  // useCreate
+  const [createFunction, createData, createStatus] = useCreate(client)
+  console.log('createFunction', createFunction)
+  console.log('createData', createData)
+  console.log('createStatus', createStatus)
 
   return (
     <div>
       {/* useGetAll */}
       <div>
-        <p>Get all of a schema type</p>
+        <h2>useGetAll</h2>
         <select
           name="schema"
           id="schema"
@@ -76,6 +84,7 @@ function Content() {
 
       {/* useGet */}
       <div>
+        <h2>useGet</h2>
         <div>
           <label htmlFor="getRef">
             {getSchema !== 'document' ? `${getSchema}` : 'collection'} name
@@ -126,6 +135,16 @@ function Content() {
           </div>
         )}
       </div>
+
+      <hr />
+
+      {/* useCreate */}
+      <UseCreateForm createFunction={createFunction} />
+      {createData && (
+        <div>
+          <code>{JSON.stringify(createData)}</code>
+        </div>
+      )}
     </div>
   )
 }
