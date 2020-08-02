@@ -69,9 +69,9 @@ function UseCreateForm(props: UseCreateFormProps) {
       case 'function':
         // TODO: convert body string to FQL object
         return {
-          name,
-          role,
-          body
+          name
+          // role,
+          // body
         }
 
       default:
