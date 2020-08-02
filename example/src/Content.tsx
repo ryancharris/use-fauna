@@ -1,10 +1,11 @@
 import React, { useState } from 'react'
 import faunadb from 'faunadb'
 
-import { useFaunaClient, useGetAll, useGet, useCreate } from 'use-fauna'
+import { useFaunaClient, useGetAll, useGet, useCreate, useDelete } from 'use-fauna'
 import { DataItem } from '../../src/types/fauna'
 
 import UseCreateForm from './UseCreateForm'
+import UseDeleteForm from './UseDeleteForm'
 
 function Content() {
   const client: faunadb.Client = useFaunaClient(process.env.REACT_APP_FAUNA_KEY as string)
@@ -27,12 +28,28 @@ function Content() {
 
   // useCreate
   const [createFunction, createData, createStatus] = useCreate(client)
-  console.log('createFunction', createFunction)
-  console.log('createData', createData)
-  console.log('createStatus', createStatus)
+  // console.log('createFunction', createFunction)
+  // console.log('createData', createData)
+  // console.log('createStatus', createStatus)
+
+  // useDelete
+  const [deleteFunction, deleteData, deleteStatus] = useDelete(client)
+  console.log('deleteFunction', deleteFunction)
+  console.log('deleteData', deleteData)
+  console.log('deleteStatus', deleteStatus)
 
   return (
     <div>
+      {/* useDelete */}
+      <UseDeleteForm deleteFunction={deleteFunction} />
+      {deleteData && (
+        <div>
+          <code>{JSON.stringify(deleteData)}</code>
+        </div>
+      )}
+
+      <hr />
+
       {/* useGetAll */}
       <div>
         <h2>useGetAll</h2>
