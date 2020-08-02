@@ -1,4 +1,8 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
+import AceEditor from 'react-ace'
+
+import 'ace-builds/src-noconflict/mode-json'
+import 'ace-builds/src-noconflict/theme-github'
 
 interface UseCreateFormProps {
   createFunction: Function
@@ -8,6 +12,7 @@ function UseCreateForm(props: UseCreateFormProps) {
   // All schemas
   const [schema, setSchema] = useState('')
   const [name, setName] = useState('')
+  const [data, setData] = React.useState<string>('')
 
   // Collection
   const [historyDays, setHistoryDays] = useState<number>(30)
@@ -27,25 +32,29 @@ function UseCreateForm(props: UseCreateFormProps) {
   const [unique, setUnique] = useState<boolean>(false)
   const [serialized, setSerialized] = useState<boolean>(true)
 
-  // TODO: Add JSON editor for object params
+  // Function
+  const [role, setRole] = useState<string>('')
 
   const createParamsObject = () => {
+    console.log(JSON.parse(data))
+    console.log(typeof JSON.parse(data))
     switch (schema) {
       case 'collection':
         return {
-          name: name,
+          name,
+          data: JSON.parse(data),
           history_days: historyDays,
           ttl_days: ttlDays
         }
       case 'database':
         return {
-          name: name,
+          name,
           api_version: apiVersion,
           priority: dbPriority
         }
       case 'document':
         return {
-          name: name
+          name
         }
       case 'index':
         return {
@@ -55,6 +64,11 @@ function UseCreateForm(props: UseCreateFormProps) {
           values: values.split(', '),
           unique,
           serialized
+        }
+      case 'function':
+        return {
+          name,
+          role
         }
 
       default:
@@ -84,6 +98,19 @@ function UseCreateForm(props: UseCreateFormProps) {
       <fieldset>
         <label htmlFor="name">name:</label>
         <input type="text" id="name" value={name} onChange={e => setName(e.target.value)} />
+      </fieldset>
+
+      <fieldset>
+        <label htmlFor="data">JSON data:</label>
+        <AceEditor
+          height="100px"
+          width="300px"
+          mode="json"
+          theme="github"
+          onChange={e => setData(e)}
+          name="data"
+          editorProps={{ $blockScrolling: true }}
+        />
       </fieldset>
 
       {/* Collections */}
@@ -199,13 +226,27 @@ function UseCreateForm(props: UseCreateFormProps) {
         </>
       )}
 
+      {/* Function */}
+      {schema === 'function' && (
+        <fieldset>
+          <label htmlFor="role">role:</label>
+          <input
+            type="text"
+            id="role"
+            name="role"
+            value={role}
+            onChange={e => setRole(e.target.value)}
+          />
+        </fieldset>
+      )}
+
       <button
         onClick={e => {
           e.preventDefault()
           props.createFunction(schema, createParamsObject(), collection)
         }}
       >
-        Create {schema}
+        Create {`${schema}`}
       </button>
     </>
   )

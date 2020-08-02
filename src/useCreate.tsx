@@ -70,10 +70,12 @@ function createQuery(
       return client.query(q.CreateDatabase(params))
     case FaunaSchema.Document:
       return client.query(q.Create(q.Collection(scope), params))
-    case FaunaSchema.Function:
     case FaunaSchema.Index:
       return client.query(q.CreateIndex(createIndexParams(params as IndexCreateParams)))
-      break
+    case FaunaSchema.Function:
+      // TODO: Add in required data and body args
+      // return client.query(q.CreateFunction(params))
+      return null
   }
 
   return null
