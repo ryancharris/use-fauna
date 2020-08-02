@@ -34,6 +34,7 @@ function UseCreateForm(props: UseCreateFormProps) {
 
   // Function
   const [role, setRole] = useState<string>('')
+  const [body, setBody] = useState<string>('')
 
   const createParamsObject = () => {
     console.log(JSON.parse(data))
@@ -66,9 +67,11 @@ function UseCreateForm(props: UseCreateFormProps) {
           serialized
         }
       case 'function':
+        // TODO: convert body string to FQL object
         return {
           name,
-          role
+          role,
+          body
         }
 
       default:
@@ -228,16 +231,28 @@ function UseCreateForm(props: UseCreateFormProps) {
 
       {/* Function */}
       {schema === 'function' && (
-        <fieldset>
-          <label htmlFor="role">role:</label>
-          <input
-            type="text"
-            id="role"
-            name="role"
-            value={role}
-            onChange={e => setRole(e.target.value)}
-          />
-        </fieldset>
+        <>
+          <fieldset>
+            <label htmlFor="body">function body:</label>
+            <input
+              type="text"
+              name="body"
+              id="body"
+              value={body}
+              onChange={e => setBody(e.currentTarget.value)}
+            />
+          </fieldset>
+          <fieldset>
+            <label htmlFor="role">role:</label>
+            <input
+              type="text"
+              id="role"
+              name="role"
+              value={role}
+              onChange={e => setRole(e.target.value)}
+            />
+          </fieldset>
+        </>
       )}
 
       <button

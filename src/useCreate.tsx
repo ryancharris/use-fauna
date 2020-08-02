@@ -73,9 +73,8 @@ function createQuery(
     case FaunaSchema.Index:
       return client.query(q.CreateIndex(createIndexParams(params as IndexCreateParams)))
     case FaunaSchema.Function:
-      // TODO: Add in required data and body args
-      // return client.query(q.CreateFunction(params))
-      return null
+      // FIX: Fails since params.body is not right data type
+      return client.query(q.CreateFunction(params))
   }
 
   return null
