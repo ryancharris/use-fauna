@@ -12,10 +12,10 @@ npm install --save use-fauna
 
 - `useDatabase`
 - `useUpdateDocument`
-- `useDeleteDocument`
 - `useGetAll`
 - `useGet`
 - `useCreate`
+- `useDelete`
 
 ---
 
