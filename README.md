@@ -11,11 +11,11 @@ npm install --save use-fauna
 ## Current hooks
 
 - `useDatabase`
-- `useUpdateDocument`
 - `useGetAll`
 - `useGet`
 - `useCreate`
 - `useDelete`
+- `useUpdate`
 
 ---
 
