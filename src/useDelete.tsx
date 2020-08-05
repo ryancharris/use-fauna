@@ -49,7 +49,5 @@ export default function useDelete(client: faunadb.Client): [Function, null | Dat
     return null
   }, [])
 
-  console.log(client)
-
   return [deleteFunction, deleteData, deleteStatus]
 }
