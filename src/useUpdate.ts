@@ -1,17 +1,57 @@
 import { useCallback, useState } from 'react'
-import faunadb from 'faunadb'
+import faunadb, { query as q } from 'faunadb'
 
-import { FaunaStatus } from './constants'
+import { FaunaSchema, FaunaStatus } from './constants'
 import { DataItem } from './types/fauna'
 
-export default function useUpdate(client: faunadb.Client): [Function, null | DataItem, string] {
+interface UpdateQueryDocumentData {
+  data: object
+  credentials: object
+  delegates: object
+}
+
+function createQuery(
+  client: faunadb.Client,
+  schema: string,
+  name: string,
+  data: UpdateQueryDocumentData,
+  refId: string = ''
+): null | Promise<object> {
+  switch (schema) {
+    case FaunaSchema.Collection:
+      return client.query(q.Update(q.Collection(name), data))
+    case FaunaSchema.Database:
+      return client.query(q.Update(q.Database(name), data))
+    case FaunaSchema.Document:
+      return client.query(q.Update(q.Ref(q.Collection(name), refId), data))
+    case FaunaSchema.Function:
+      return client.query(q.Update(q.Function(name), data))
+    case FaunaSchema.Index:
+      return client.query(q.Update(q.Index(name), data))
+  }
+
+  return null
+}
+
+export default function useUpdate(client: faunadb.Client): [Function, null | object, string] {
   console.log(client)
-  const [data] = useState<null | DataItem>(null)
-  const [status] = useState<string>(FaunaStatus.NOT_LOADED)
-  const updateFunction = useCallback((schema: string, name: string, scope?: string) => {
-    console.log(schema)
-    console.log(name)
-    console.log(scope)
+  const [data, setData] = useState<null | object>(null)
+  const [status, setStatus] = useState<string>(FaunaStatus.NOT_LOADED)
+  const updateFunction = useCallback((schema: string, name: string, refId?: string) => {
+    const fqlQuery = createQuery(client, schema, name, refId)
+
+    if (fqlQuery) {
+      fqlQuery
+        .then((res: object) => {
+          setStatus(FaunaStatus.LOADING)
+          setData(res)
+          setStatus(FaunaStatus.LOADED)
+        })
+        .catch(err => {
+          console.error(`[fauna-hooks] ${err}`)
+          setStatus(FaunaStatus.ERROR)
+        })
+    }
     return {} as DataItem
   }, [])
 
