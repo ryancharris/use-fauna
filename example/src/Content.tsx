@@ -6,6 +6,7 @@ import { DataItem } from '../../src/types/fauna'
 
 import UseCreateForm from './UseCreateForm'
 import UseDeleteForm from './UseDeleteForm'
+import UseUpdateForm from './UseUpdateForm'
 
 function Content() {
   const client: faunadb.Client = useFaunaClient(process.env.REACT_APP_FAUNA_KEY as string)
@@ -45,6 +46,16 @@ function Content() {
 
   return (
     <div>
+      {/* useUpdate */}
+      <UseUpdateForm updateFunction={updateFunction} />
+      {updateData && (
+        <div>
+          <code>{JSON.stringify(updateData)}</code>
+        </div>
+      )}
+
+      <hr />
+
       {/* useDelete */}
       <UseDeleteForm deleteFunction={deleteFunction} />
       {deleteData && (
