@@ -37,23 +37,26 @@ export default function useUpdate(client: faunadb.Client): [Function, null | obj
   console.log(client)
   const [data, setData] = useState<null | object>(null)
   const [status, setStatus] = useState<string>(FaunaStatus.NOT_LOADED)
-  const updateFunction = useCallback((schema: string, name: string, refId?: string) => {
-    const fqlQuery = createQuery(client, schema, name, refId)
+  const updateFunction = useCallback(
+    (schema: string, name: string, data: UpdateQueryDocumentData, refId?: string) => {
+      const fqlQuery = createQuery(client, schema, name, data, refId)
 
-    if (fqlQuery) {
-      fqlQuery
-        .then((res: object) => {
-          setStatus(FaunaStatus.LOADING)
-          setData(res)
-          setStatus(FaunaStatus.LOADED)
-        })
-        .catch(err => {
-          console.error(`[fauna-hooks] ${err}`)
-          setStatus(FaunaStatus.ERROR)
-        })
-    }
-    return {} as DataItem
-  }, [])
+      if (fqlQuery) {
+        fqlQuery
+          .then((res: object) => {
+            setStatus(FaunaStatus.LOADING)
+            setData(res)
+            setStatus(FaunaStatus.LOADED)
+          })
+          .catch(err => {
+            console.error(`[fauna-hooks] ${err}`)
+            setStatus(FaunaStatus.ERROR)
+          })
+      }
+      return {} as DataItem
+    },
+    []
+  )
 
   return [updateFunction, data, status]
 }
