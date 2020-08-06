@@ -17,7 +17,7 @@ function createQuery(
   data: UpdateQueryDocumentData,
   refId: string = ''
 ): null | Promise<object> {
-  // TODO: Need to add Keys and Roles functionality
+  // TODO: Need to add Keys functionality
   switch (schema) {
     case FaunaSchema.Collection:
       return client.query(q.Update(q.Collection(name), data))
@@ -29,6 +29,8 @@ function createQuery(
       return client.query(q.Update(q.Function(name), data))
     case FaunaSchema.Index:
       return client.query(q.Update(q.Index(name), data))
+    case FaunaSchema.Role:
+      return client.query(q.Update(q.Role(name), data))
   }
 
   return null

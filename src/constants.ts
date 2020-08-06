@@ -19,5 +19,6 @@ export const FaunaSchema = {
   Database: 'database',
   Document: 'document',
   Function: 'function',
-  Index: 'index'
+  Index: 'index',
+  Role: 'role'
 }

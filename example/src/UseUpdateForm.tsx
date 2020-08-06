@@ -45,6 +45,7 @@ function UseUpdateForm(props: UseUpdateFormProps) {
         <option value="document">document</option>
         <option value="function">function</option>
         <option value="index">index</option>
+        <option value="role">role</option>
       </select>
 
       <fieldset>
