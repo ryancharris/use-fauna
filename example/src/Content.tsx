@@ -1,11 +1,12 @@
 import React, { useState } from 'react'
 import faunadb from 'faunadb'
 
-import { useFaunaClient, useGetAll, useGet, useCreate, useDelete } from 'use-fauna'
+import { useFaunaClient, useGetAll, useGet, useCreate, useDelete, useUpdate } from 'use-fauna'
 import { DataItem } from '../../src/types/fauna'
 
 import UseCreateForm from './UseCreateForm'
 import UseDeleteForm from './UseDeleteForm'
+import UseUpdateForm from './UseUpdateForm'
 
 function Content() {
   const client: faunadb.Client = useFaunaClient(process.env.REACT_APP_FAUNA_KEY as string)
@@ -34,12 +35,27 @@ function Content() {
 
   // useDelete
   const [deleteFunction, deleteData, deleteStatus] = useDelete(client)
-  console.log('deleteFunction', deleteFunction)
-  console.log('deleteData', deleteData)
-  console.log('deleteStatus', deleteStatus)
+  // console.log('deleteFunction', deleteFunction)
+  // console.log('deleteData', deleteData)
+  // console.log('deleteStatus', deleteStatus)
+
+  const [updateFunction, updateData, updateStatus] = useUpdate(client)
+  console.log('updateFunction', updateFunction)
+  console.log('updateData', updateData)
+  console.log('updateStatus', updateStatus)
 
   return (
     <div>
+      {/* useUpdate */}
+      <UseUpdateForm updateFunction={updateFunction} />
+      {updateData && (
+        <div>
+          <code>{JSON.stringify(updateData)}</code>
+        </div>
+      )}
+
+      <hr />
+
       {/* useDelete */}
       <UseDeleteForm deleteFunction={deleteFunction} />
       {deleteData && (
