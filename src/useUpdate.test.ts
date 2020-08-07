@@ -15,7 +15,7 @@ describe('useUpdate', () => {
     const client = db.current
     expect(client).toBeInstanceOf(faunadb.Client)
 
-    // Render useGet
+    // Render useUpdate
     const { result, waitForNextUpdate } = renderHook(() => useUpdate(client))
     const updateFunction = result.current[0]
     const updateData = result.current[1]
@@ -51,7 +51,7 @@ describe('useUpdate', () => {
     const client = db.current
     expect(client).toBeInstanceOf(faunadb.Client)
 
-    // Render useGet
+    // Render useUpdate
     const { result, waitForNextUpdate } = renderHook(() => useUpdate(client))
     const updateFunction = result.current[0]
     const updateData = result.current[1]
@@ -87,7 +87,7 @@ describe('useUpdate', () => {
     const client = db.current
     expect(client).toBeInstanceOf(faunadb.Client)
 
-    // Render useGet
+    // Render useUpdate
     const { result, waitForNextUpdate } = renderHook(() => useUpdate(client))
     const updateFunction = result.current[0]
     const updateData = result.current[1]
