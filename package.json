@@ -38,6 +38,7 @@
     "@types/react": "^16.9.41",
     "cross-env": "^5.2.0",
     "gh-pages": "^2.0.1",
+    "husky": "^4.2.5",
     "prettier": "2.0.5",
     "react": "^16.9.0",
     "react-scripts": "^3.4.0",
