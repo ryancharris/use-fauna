@@ -45,7 +45,7 @@ describe('useGetAll', () => {
       expect(getAllStatus).toEqual(FaunaStatus.LOADING)
 
       await hookUpdateFunction()
-      expect(status).toEqual(FaunaStatus.LOADED)
+      expect(getAllStatus).toEqual(FaunaStatus.LOADED)
       expect(getAllData).toBeDefined()
       expect(getAllData).toBeInstanceOf(Array)
     })

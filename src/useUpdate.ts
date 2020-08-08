@@ -37,7 +37,6 @@ function createQuery(
 }
 
 export default function useUpdate(client: faunadb.Client): [Function, null | object, string] {
-  console.log(client)
   const [data, setData] = useState<null | object>(null)
   const [status, setStatus] = useState<string>(FaunaStatus.NOT_LOADED)
   const updateFunction = useCallback(

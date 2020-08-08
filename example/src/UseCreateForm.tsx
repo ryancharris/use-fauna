@@ -37,8 +37,6 @@ function UseCreateForm(props: UseCreateFormProps) {
   const [body, setBody] = useState<string>('')
 
   const createParamsObject = () => {
-    console.log(JSON.parse(data))
-    console.log(typeof JSON.parse(data))
     switch (schema) {
       case 'collection':
         return {
