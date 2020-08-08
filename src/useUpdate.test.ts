@@ -7,24 +7,33 @@ import useFaunaClient from './useFaunaClient'
 import useUpdate from './useUpdate'
 
 describe('useUpdate', () => {
-  it('successfully updates non-Document schemas', () => {
+  let client: faunadb.Client = new faunadb.Client()
+  let updateFunction: Function = () => {}
+  let updateData: null | object = null
+  let updateStatus: string = ''
+  let hookUpdateFunction: Function = () => {}
+
+  beforeAll(() => {
     // Instantiate client
     const { result: db } = renderHook(() =>
       useFaunaClient('fnADxo6lvWACEnAmge1HiGgF9FmI48Ok75ij_Yfk')
     )
-    const client = db.current
+    client = db.current
     expect(client).toBeInstanceOf(faunadb.Client)
 
     // Render useUpdate
     const { result, waitForNextUpdate } = renderHook(() => useUpdate(client))
-    const updateFunction = result.current[0]
-    const updateData = result.current[1]
-    const updateStatus = result.current[2]
+    updateFunction = result.current[0]
+    updateData = result.current[1]
+    updateStatus = result.current[2]
+    hookUpdateFunction = waitForNextUpdate
 
     expect(updateFunction).toBeInstanceOf(Function)
     expect(updateData).toBeNull()
     expect(updateStatus).toBe(FaunaStatus.NOT_LOADED)
+  })
 
+  it('successfully updates non-Document schemas', () => {
     act(async () => {
       updateFunction('collection', 'orders', {
         data: {
@@ -32,11 +41,11 @@ describe('useUpdate', () => {
         }
       })
 
-      await waitForNextUpdate()
+      await hookUpdateFunction()
       expect(updateData).toBeNull()
       expect(updateStatus).toEqual(FaunaStatus.LOADING)
 
-      await waitForNextUpdate()
+      await hookUpdateFunction()
       expect(updateStatus).toEqual(FaunaStatus.LOADED)
       expect(updateData).toBeDefined()
       expect(updateData).toBeInstanceOf(Object)
@@ -44,35 +53,23 @@ describe('useUpdate', () => {
   })
 
   it('successfully updates Document', () => {
-    // Instantiate client
-    const { result: db } = renderHook(() =>
-      useFaunaClient('fnADxo6lvWACEnAmge1HiGgF9FmI48Ok75ij_Yfk')
-    )
-    const client = db.current
-    expect(client).toBeInstanceOf(faunadb.Client)
-
-    // Render useUpdate
-    const { result, waitForNextUpdate } = renderHook(() => useUpdate(client))
-    const updateFunction = result.current[0]
-    const updateData = result.current[1]
-    const updateStatus = result.current[2]
-
-    expect(updateFunction).toBeInstanceOf(Function)
-    expect(updateData).toBeNull()
-    expect(updateStatus).toBe(FaunaStatus.NOT_LOADED)
-
     act(async () => {
-      updateFunction('document', 'customers', {
-        data: {
-          firstName: "emacs"
-        }
-      }, '269603026108416530')
+      updateFunction(
+        'document',
+        'customers',
+        {
+          data: {
+            firstName: 'emacs'
+          }
+        },
+        '269603026108416530'
+      )
 
-      await waitForNextUpdate()
+      await hookUpdateFunction()
       expect(updateData).toBeNull()
       expect(updateStatus).toEqual(FaunaStatus.LOADING)
 
-      await waitForNextUpdate()
+      await hookUpdateFunction()
       expect(updateStatus).toEqual(FaunaStatus.LOADED)
       expect(updateData).toBeDefined()
       expect(updateData).toBeInstanceOf(Object)
@@ -80,27 +77,10 @@ describe('useUpdate', () => {
   })
 
   it('fails to update schema', () => {
-    // Instantiate client
-    const { result: db } = renderHook(() =>
-      useFaunaClient('fnADxo6lvWACEnAmge1HiGgF9FmI48Ok75ij_Yfk')
-    )
-    const client = db.current
-    expect(client).toBeInstanceOf(faunadb.Client)
-
-    // Render useUpdate
-    const { result, waitForNextUpdate } = renderHook(() => useUpdate(client))
-    const updateFunction = result.current[0]
-    const updateData = result.current[1]
-    const updateStatus = result.current[2]
-
-    expect(updateFunction).toBeInstanceOf(Function)
-    expect(updateData).toBeNull()
-    expect(updateStatus).toBe(FaunaStatus.NOT_LOADED)
-
     act(async () => {
       updateFunction('collection', 'hamburgers')
 
-      await waitForNextUpdate()
+      await hookUpdateFunction()
       expect(updateData).toBeNull()
       expect(updateStatus).toEqual(FaunaStatus.ERROR)
     })
