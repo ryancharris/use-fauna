@@ -7,32 +7,41 @@ import useFaunaClient from './useFaunaClient'
 import useCreate from './useCreate'
 
 describe('useCreate', () => {
-  it('successfully creates Collection', async () => {
+  let client: faunadb.Client = new faunadb.Client()
+  let createFunction: Function = () => {}
+  let createData: null | object = null
+  let createStatus: string = ''
+  let hookUpdateFunction: Function = () => {}
+
+  beforeAll(() => {
     // Instantiate client
     const { result: db } = renderHook(() =>
       useFaunaClient('fnADxo6lvWACEnAmge1HiGgF9FmI48Ok75ij_Yfk')
     )
-    const client = db.current
+    client = db.current
     expect(client).toBeInstanceOf(faunadb.Client)
 
     // Render useCreate
     const { result, waitForNextUpdate } = renderHook(() => useCreate(client))
-    const createFunction = result.current[0]
-    const createData = result.current[1]
-    const createStatus = result.current[2]
+    createFunction = result.current[0]
+    createData = result.current[1]
+    createStatus = result.current[2]
+    hookUpdateFunction = waitForNextUpdate
 
     expect(createFunction).toBeInstanceOf(Function)
     expect(createData).toBeNull()
     expect(createStatus).toBe(FaunaStatus.NOT_LOADED)
+  })
 
+  it('successfully creates Collection', async () => {
     act(async () => {
       createFunction('collection', { name: 'my-collection' })
 
-      await waitForNextUpdate()
+      await hookUpdateFunction()
       expect(createData).toBeNull()
       expect(createStatus).toEqual(FaunaStatus.LOADING)
 
-      await waitForNextUpdate()
+      await hookUpdateFunction()
       expect(createStatus).toEqual(FaunaStatus.LOADED)
       expect(createData).toBeDefined()
       expect(createData).toBeInstanceOf(Object)
@@ -40,31 +49,14 @@ describe('useCreate', () => {
   })
 
   it('successfully creates Database', async () => {
-    // Instantiate client
-    const { result: db } = renderHook(() =>
-      useFaunaClient('fnADxo6lvWACEnAmge1HiGgF9FmI48Ok75ij_Yfk')
-    )
-    const client = db.current
-    expect(client).toBeInstanceOf(faunadb.Client)
-
-    // Render useCreate
-    const { result, waitForNextUpdate } = renderHook(() => useCreate(client))
-    const createFunction = result.current[0]
-    const createData = result.current[1]
-    const createStatus = result.current[2]
-
-    expect(createFunction).toBeInstanceOf(Function)
-    expect(createData).toBeNull()
-    expect(createStatus).toBe(FaunaStatus.NOT_LOADED)
-
     act(async () => {
       createFunction('database', { name: 'my-database' })
 
-      await waitForNextUpdate()
+      await hookUpdateFunction()
       expect(createData).toBeNull()
       expect(createStatus).toEqual(FaunaStatus.LOADING)
 
-      await waitForNextUpdate()
+      await hookUpdateFunction()
       expect(createStatus).toEqual(FaunaStatus.LOADED)
       expect(createData).toBeDefined()
       expect(createData).toBeInstanceOf(Object)
@@ -72,31 +64,14 @@ describe('useCreate', () => {
   })
 
   it('successfully creates Document', async () => {
-    // Instantiate client
-    const { result: db } = renderHook(() =>
-      useFaunaClient('fnADxo6lvWACEnAmge1HiGgF9FmI48Ok75ij_Yfk')
-    )
-    const client = db.current
-    expect(client).toBeInstanceOf(faunadb.Client)
-
-    // Render useCreate
-    const { result, waitForNextUpdate } = renderHook(() => useCreate(client))
-    const createFunction = result.current[0]
-    const createData = result.current[1]
-    const createStatus = result.current[2]
-
-    expect(createFunction).toBeInstanceOf(Function)
-    expect(createData).toBeNull()
-    expect(createStatus).toBe(FaunaStatus.NOT_LOADED)
-
     act(async () => {
       createFunction('document', { name: 'my-document' }, 'ui-test')
 
-      await waitForNextUpdate()
+      await hookUpdateFunction()
       expect(createData).toBeNull()
       expect(createStatus).toEqual(FaunaStatus.LOADING)
 
-      await waitForNextUpdate()
+      await hookUpdateFunction()
       expect(createStatus).toEqual(FaunaStatus.LOADED)
       expect(createData).toBeDefined()
       expect(createData).toBeInstanceOf(Object)
@@ -104,31 +79,14 @@ describe('useCreate', () => {
   })
 
   it('successfully creates Index', async () => {
-    // Instantiate client
-    const { result: db } = renderHook(() =>
-      useFaunaClient('fnADxo6lvWACEnAmge1HiGgF9FmI48Ok75ij_Yfk')
-    )
-    const client = db.current
-    expect(client).toBeInstanceOf(faunadb.Client)
-
-    // Render useCreate
-    const { result, waitForNextUpdate } = renderHook(() => useCreate(client))
-    const createFunction = result.current[0]
-    const createData = result.current[1]
-    const createStatus = result.current[2]
-
-    expect(createFunction).toBeInstanceOf(Function)
-    expect(createData).toBeNull()
-    expect(createStatus).toBe(FaunaStatus.NOT_LOADED)
-
     act(async () => {
       createFunction('index', { name: 'my-index', source: ['ui-test'] })
 
-      await waitForNextUpdate()
+      await hookUpdateFunction()
       expect(createData).toBeNull()
       expect(createStatus).toEqual(FaunaStatus.LOADING)
 
-      await waitForNextUpdate()
+      await hookUpdateFunction()
       expect(createStatus).toEqual(FaunaStatus.LOADED)
       expect(createData).toBeDefined()
       expect(createData).toBeInstanceOf(Object)
