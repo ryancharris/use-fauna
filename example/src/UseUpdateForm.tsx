@@ -88,7 +88,6 @@ function UseUpdateForm(props: UseUpdateFormProps) {
       <button
         onClick={e => {
           e.preventDefault()
-          console.log(JSON.parse(data))
           props.updateFunction(schema, name, createParamsObject(JSON.parse(data)), refId)
         }}
       >

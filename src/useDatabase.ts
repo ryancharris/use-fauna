@@ -16,7 +16,9 @@ export default function useDatabase(key: string): DatabaseHookReturns {
   const DatabaseContext = React.createContext(client)
 
   const DatabaseProvider = (props: DatabaseProviderProps): React.ReactNode => {
-    return <DatabaseContext.Provider value={client}>{props.children}</DatabaseContext.Provider>
+    console.log(props)
+    // return <DatabaseContext.Provider value={client}>{props.children}</DatabaseContext.Provider>
+    return
   }
 
   return { client, DatabaseContext, DatabaseProvider }

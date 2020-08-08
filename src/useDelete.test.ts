@@ -49,7 +49,7 @@ describe('useDelete', () => {
 
   xit('successfully deletes Document', () => {
     act(async () => {
-      deleteFunction('document', 'my-test-collection', refId)
+      // deleteFunction('document', 'my-test-collection', refId)
 
       await hookUpdateFunction()
       expect(deleteData).toBeNull()

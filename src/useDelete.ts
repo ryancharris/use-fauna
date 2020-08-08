@@ -10,10 +10,6 @@ function createDeleteQuery(
   name: string,
   refId?: string
 ): Promise<DataItem> | null {
-  console.log('schema', schema)
-  console.log('name', name)
-  console.log('refId', refId)
-
   switch (schema) {
     case 'collection':
       return client.query(q.Delete(q.Collection(name)))
