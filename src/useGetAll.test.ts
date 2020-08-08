@@ -7,61 +7,58 @@ import useFaunaClient from './useFaunaClient'
 import useGetAll from './useGetAll'
 
 describe('useGetAll', () => {
-  it('gets all collections successfully', async () => {
+  let client: faunadb.Client = new faunadb.Client()
+  let getAllFunction: Function = () => {}
+  let getAllData: null | object = null
+  let getAllStatus: string = ''
+  let hookUpdateFunction: Function = () => {}
+
+  beforeAll(() => {
     // Instantiate access to DB
     const { result: db } = renderHook(() =>
       useFaunaClient('fnADxo6lvWACEnAmge1HiGgF9FmI48Ok75ij_Yfk')
     )
-    const client = db.current
-    expect(client).toBeInstanceOf(faunadb.Client)
-
-    // Render useGetAllDocuments
-    const { result, waitForNextUpdate } = renderHook(() => useGetAll(client))
-    const getAll = result.current[0]
-    const data = result.current[1]
-    const status = result.current[2]
-
-    expect(getAll).toBeInstanceOf(Function)
-    expect(data).toBeNull()
-
-    act(async () => {
-      getAll('databases')
-
-      await waitForNextUpdate()
-      expect(data).toBeNull()
-      expect(status).toEqual(FaunaStatus.NOT_LOADED)
-
-      await waitForNextUpdate()
-      expect(status).toEqual(FaunaStatus.LOADING)
-
-      await waitForNextUpdate()
-      expect(status).toEqual(FaunaStatus.LOADED)
-      expect(data).toBeDefined()
-      expect(data).toBeInstanceOf(Array)
-    })
-  })
-
-  it('fails get all documents', async () => {
-    // Instantiate access to DB
-    const { result: db } = renderHook(() =>
-      useFaunaClient('fnADrW9uexACE1_GWGovu3My4mXWcm-tgQ3Sp3oP')
-    )
-    const client = db.current
+    client = db.current
     expect(client).toBeInstanceOf(faunadb.Client)
 
     // Render useGetAll
     const { result, waitForNextUpdate } = renderHook(() => useGetAll(client))
-    const getAll = await result.current[0]
-    const data = result.current[1]
-    const status = result.current[2]
+    getAllFunction = result.current[0]
+    getAllData = result.current[1]
+    getAllStatus = result.current[2]
+    hookUpdateFunction = waitForNextUpdate
 
+    expect(getAllFunction).toBeInstanceOf(Function)
+    expect(getAllData).toBeNull()
+    expect(getAllStatus).toBe(FaunaStatus.NOT_LOADED)
+  })
+
+  it('gets all collections successfully', async () => {
     act(async () => {
-      getAll('non-existent-schema')
+      getAllFunction('databases')
+
+      await hookUpdateFunction()
+      expect(getAllData).toBeNull()
+      expect(getAllStatus).toEqual(FaunaStatus.NOT_LOADED)
+
+      await hookUpdateFunction()
+      expect(getAllStatus).toEqual(FaunaStatus.LOADING)
+
+      await hookUpdateFunction()
+      expect(status).toEqual(FaunaStatus.LOADED)
+      expect(getAllData).toBeDefined()
+      expect(getAllData).toBeInstanceOf(Array)
+    })
+  })
+
+  it('fails get all documents', async () => {
+    act(async () => {
+      getAllFunction('non-existent-schema')
 
       // Fails to fetch data and resolves to ERROR
-      await waitForNextUpdate()
-      expect(data).toBeNull()
-      expect(status).toEqual(FaunaStatus.ERROR)
+      await hookUpdateFunction()
+      expect(getAllData).toBeNull()
+      expect(getAllStatus).toEqual(FaunaStatus.ERROR)
     })
   })
 })

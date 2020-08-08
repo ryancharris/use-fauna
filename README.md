@@ -12,32 +12,32 @@ npm install --save use-fauna
 
 2. Import the library
 
-``` javascript
+```javascript
 import {
-    useFaunaClient, 
-    useGet, 
-    useGetAll, 
-    useCreate, 
-    useDelete, 
+    useFaunaClient,
+    useGet,
+    useGetAll,
+    useCreate,
+    useDelete,
     useUpdate
 } = 'use-fauna'
 ```
 
-## Current hooks
+## Included hooks
 
-- `useFaunaClient`
+#### `useFaunaClient`
 
 Instantiate a Fauna client passing this hook an admin key.
 
-``` javascript
+```javascript
 const client = useFaunaClient('ADMIN_KEY')
 ```
 
-- `useGetAll`
+#### `useGetAll`
 
 Get all the Collections, Databases, Documents, Functions or Indexes.
 
-``` javascript
+```javascript
 const client = useFaunaClient('ADMIN_KEY')
 const [getAllFunction, data, status] = useGetAll(client)
 
@@ -48,11 +48,11 @@ getAllFunction('functions')
 getAllFunction('indexes')
 ```
 
-- `useGet`
+#### `useGet`
 
 Get an individual Collection, Database, Document, Function or Index.
 
-``` javascript
+```javascript
 const client = useFaunaClient('ADMIN_KEY')
 const [getFunction, data, status] = useGet(client)
 
@@ -63,11 +63,11 @@ getFunction('function', 'my-function')
 getFunction('index', 'my-index')
 ```
 
-- `useCreate`
+#### `useCreate`
 
 Create a Collection, Database, Document or Index.
 
-``` javascript
+```javascript
 const client = useFaunaClient('ADMIN_KEY')
 const [createFunction, data, status] = useCreate(client)
 
@@ -78,11 +78,11 @@ createFunction('function', dataObject)
 createFunction('index', dataObject)
 ```
 
-- `useDelete`
+#### `useDelete`
 
 Delete a Collection, Database, Document or Index.
 
-``` javascript
+```javascript
 const client = useFaunaClient('ADMIN_KEY')
 const [deleteFunction, data, status] = useCreate(client)
 
@@ -93,17 +93,17 @@ deleteFunction('function', 'my-function')
 deleteFunction('index', 'my-index')
 ```
 
-- `useUpdate`
+#### `useUpdate`
 
 Update a Collection, Database, Document, Function, Index or Role.
 
-``` javascript
+```javascript
 const client = useFaunaClient('ADMIN_KEY')
 const [updateFunction, data, status] = useCreate(client)
 
 updateFunction('collection', 'my-collection', dataObject)
 updateFunction('database', 'my-database', dataObject)
-updateFunction('document', 'my-collection', dataObject,  'REF_ID')
+updateFunction('document', 'my-collection', dataObject, 'REF_ID')
 updateFunction('function', 'my-function', dataObject)
 updateFunction('index', 'my-index', dataObject)
 ```
