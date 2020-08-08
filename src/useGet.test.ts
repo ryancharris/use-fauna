@@ -7,32 +7,41 @@ import useFaunaClient from './useFaunaClient'
 import useGet from './useGet'
 
 describe('useGet', () => {
-  it('successfully retrieves non-Document schemas', () => {
+  let client: faunadb.Client = new faunadb.Client()
+  let getFunction: Function = () => {}
+  let getData: null | object = null
+  let getStatus: string = ''
+  let hookUpdateFunction: Function = () => {}
+
+  beforeAll(() => {
     // Instantiate client
     const { result: db } = renderHook(() =>
       useFaunaClient('fnADxo6lvWACEnAmge1HiGgF9FmI48Ok75ij_Yfk')
     )
-    const client = db.current
+    client = db.current
     expect(client).toBeInstanceOf(faunadb.Client)
 
     // Render useGet
     const { result, waitForNextUpdate } = renderHook(() => useGet(client))
-    const getFunction = result.current[0]
-    const getData = result.current[1]
-    const getStatus = result.current[2]
+    getFunction = result.current[0]
+    getData = result.current[1]
+    getStatus = result.current[2]
+    hookUpdateFunction = waitForNextUpdate
 
     expect(getFunction).toBeInstanceOf(Function)
     expect(getData).toBeNull()
     expect(getStatus).toBe(FaunaStatus.NOT_LOADED)
+  })
 
+  it('successfully retrieves non-Document schemas', () => {
     act(async () => {
       getFunction('collection', 'orders')
 
-      await waitForNextUpdate()
+      await hookUpdateFunction()
       expect(getData).toBeNull()
       expect(getStatus).toEqual(FaunaStatus.LOADING)
 
-      await waitForNextUpdate()
+      await hookUpdateFunction()
       expect(getStatus).toEqual(FaunaStatus.LOADED)
       expect(getData).toBeDefined()
       expect(getData).toBeInstanceOf(Object)
@@ -40,31 +49,14 @@ describe('useGet', () => {
   })
 
   it('successfully retrieves Document', () => {
-    // Instantiate client
-    const { result: db } = renderHook(() =>
-      useFaunaClient('fnADxo6lvWACEnAmge1HiGgF9FmI48Ok75ij_Yfk')
-    )
-    const client = db.current
-    expect(client).toBeInstanceOf(faunadb.Client)
-
-    // Render useGet
-    const { result, waitForNextUpdate } = renderHook(() => useGet(client))
-    const getFunction = result.current[0]
-    const getData = result.current[1]
-    const getStatus = result.current[2]
-
-    expect(getFunction).toBeInstanceOf(Function)
-    expect(getData).toBeNull()
-    expect(getStatus).toBe(FaunaStatus.NOT_LOADED)
-
     act(async () => {
       getFunction('document', 'orders', '269603026111563282')
 
-      await waitForNextUpdate()
+      await hookUpdateFunction()
       expect(getData).toBeNull()
       expect(getStatus).toEqual(FaunaStatus.LOADING)
 
-      await waitForNextUpdate()
+      await hookUpdateFunction()
       expect(getStatus).toEqual(FaunaStatus.LOADED)
       expect(getData).toBeDefined()
       expect(getData).toBeInstanceOf(Object)
@@ -72,27 +64,10 @@ describe('useGet', () => {
   })
 
   it('fails to retrieve schema', () => {
-    // Instantiate client
-    const { result: db } = renderHook(() =>
-      useFaunaClient('fnADxo6lvWACEnAmge1HiGgF9FmI48Ok75ij_Yfk')
-    )
-    const client = db.current
-    expect(client).toBeInstanceOf(faunadb.Client)
-
-    // Render useGet
-    const { result, waitForNextUpdate } = renderHook(() => useGet(client))
-    const getFunction = result.current[0]
-    const getData = result.current[1]
-    const getStatus = result.current[2]
-
-    expect(getFunction).toBeInstanceOf(Function)
-    expect(getData).toBeNull()
-    expect(getStatus).toBe(FaunaStatus.NOT_LOADED)
-
     act(async () => {
       getFunction('collection', 'hamburgers')
 
-      await waitForNextUpdate()
+      await hookUpdateFunction()
       expect(getData).toBeNull()
       expect(getStatus).toEqual(FaunaStatus.ERROR)
     })
