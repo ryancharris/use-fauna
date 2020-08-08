@@ -5,10 +5,13 @@ import { FaunaStatus } from './constants'
 
 import useFaunaClient from './useFaunaClient'
 import useDelete from './useDelete'
-import useCreate from './useCreate'
 
 describe('useDelete', () => {
-  let client = null as any
+  let client: faunadb.Client = new faunadb.Client()
+  let deleteFunction: Function = () => {}
+  let deleteData: null | object = null
+  let deleteStatus: string = ''
+  let hookUpdateFunction: Function = () => {}
 
   beforeAll(async () => {
     // Instantiate client
@@ -18,31 +21,26 @@ describe('useDelete', () => {
     client = db.current
     expect(client).toBeInstanceOf(faunadb.Client)
 
-    const { result } = renderHook(() => useCreate(client))
-    const createFunction = result.current[0]
-    await createFunction('collection', { name: 'my-test-collection' })
-    // TODO: Get this creation to finish second test
-    // await createFunction('document', { name: 'my-test-document' }, 'my-test-collection')
-  })
-
-  it('successfully deletes non-Document type', () => {
     const { result, waitForNextUpdate } = renderHook(() => useDelete(client))
-    const deleteFunction = result.current[0]
-    const deleteData = result.current[1]
-    const deleteStatus = result.current[2]
+    deleteFunction = result.current[0]
+    deleteData = result.current[1]
+    deleteStatus = result.current[2]
+    hookUpdateFunction = waitForNextUpdate
 
     expect(deleteFunction).toBeInstanceOf(Function)
     expect(deleteData).toBeNull()
     expect(deleteStatus).toBe(FaunaStatus.NOT_LOADED)
+  })
 
+  it('successfully deletes non-Document type', () => {
     act(async () => {
       deleteFunction('collection', 'my-test-collection')
 
-      await waitForNextUpdate()
+      await hookUpdateFunction()
       expect(deleteData).toBeNull()
       // expect(deleteStatus).toEqual(FaunaStatus.LOADING)
 
-      await waitForNextUpdate()
+      await hookUpdateFunction()
       expect(deleteStatus).toEqual(FaunaStatus.LOADED)
       expect(deleteData).toBeDefined()
       expect(deleteData).toBeInstanceOf(Object)
@@ -50,24 +48,14 @@ describe('useDelete', () => {
   })
 
   xit('successfully deletes Document', () => {
-    const { result, waitForNextUpdate } = renderHook(() => useDelete(client))
-    const deleteFunction = result.current[0]
-    const deleteData = result.current[1]
-    const deleteStatus = result.current[2]
-
-    expect(deleteFunction).toBeInstanceOf(Function)
-    expect(deleteData).toBeNull()
-    expect(deleteStatus).toBe(FaunaStatus.NOT_LOADED)
-
     act(async () => {
       deleteFunction('document', 'my-test-collection', refId)
 
-      await waitForNextUpdate()
+      await hookUpdateFunction()
       expect(deleteData).toBeNull()
       // expect(deleteStatus).toEqual(FaunaStatus.LOADING)
 
-      await waitForNextUpdate()
-      console.log(deleteData)
+      await hookUpdateFunction()
       expect(deleteStatus).toEqual(FaunaStatus.LOADED)
       expect(deleteData).toBeDefined()
       expect(deleteData).toBeInstanceOf(Object)
@@ -75,19 +63,10 @@ describe('useDelete', () => {
   })
 
   it('fails to retrieve Document without refId', () => {
-    const { result, waitForNextUpdate } = renderHook(() => useDelete(client))
-    const deleteFunction = result.current[0]
-    const deleteData = result.current[1]
-    const deleteStatus = result.current[2]
-
-    expect(deleteFunction).toBeInstanceOf(Function)
-    expect(deleteData).toBeNull()
-    expect(deleteStatus).toBe(FaunaStatus.NOT_LOADED)
-
     act(async () => {
       deleteFunction('document', { name: 'my-document' }, null)
 
-      await waitForNextUpdate()
+      await hookUpdateFunction()
       expect(deleteData).toBeNull()
       expect(deleteStatus).toEqual(FaunaStatus.ERROR)
     })
