@@ -12,6 +12,9 @@
     "node": ">=8",
     "npm": ">=5"
   },
+  "files": [
+    "src/**/*"
+  ],
   "scripts": {
     "test": "cross-env CI=1 react-scripts test --env=jsdom",
     "test:watch": "react-scripts test --env=jsdom",
@@ -22,7 +25,8 @@
     "deploy": "gh-pages -d example/build",
     "prettier": "prettier --write --config ./.prettierrc \"src/**/*.{js,jsx,ts,tsx,json,css,scss,md}\" --loglevel \"log\"",
     "lint": "eslint \"./src/**/*.{js,json,ts,tsx}\"",
-    "pre-commit": "npm run prettier && npm run lint"
+    "lint-fix": "eslint --fix \"./src/**/*.{js,json,ts,tsx}\"",
+    "pre-commit": "npm run prettier && npm run lint-fix"
   },
   "dependencies": {
     "ace-builds": "^1.4.12",
