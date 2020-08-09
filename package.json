@@ -1,6 +1,6 @@
 {
   "name": "use-fauna",
-  "version": "1.0.0-beta",
+  "version": "1.0.0-alpha",
   "description": "React hooks for FaunaDB",
   "author": "ryancharris",
   "license": "MIT",
