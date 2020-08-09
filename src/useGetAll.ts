@@ -12,7 +12,7 @@ type QueryResponse = {
 function createSchemaQuery(
   schema: string,
   client: faunadb.Client,
-  scope: string = ''
+  scope = ''
 ): Promise<QueryResponse> | null {
   switch (schema) {
     case FaunaSchemas.Collections:

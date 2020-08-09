@@ -10,7 +10,7 @@ describe('useDelete', () => {
   let client: faunadb.Client = new faunadb.Client()
   let deleteFunction: Function = () => {}
   let deleteData: null | object = null
-  let deleteStatus: string = ''
+  let deleteStatus = ''
   let hookUpdateFunction: Function = () => {}
 
   beforeAll(async () => {

@@ -61,7 +61,7 @@ function createQuery(
   schema: string,
   client: faunadb.Client,
   params: CreateParams,
-  scope: string = ''
+  scope = ''
 ): null | Promise<DataItem> {
   switch (schema) {
     case FaunaSchema.Collection:

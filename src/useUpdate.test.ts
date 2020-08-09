@@ -10,7 +10,7 @@ describe('useUpdate', () => {
   let client: faunadb.Client = new faunadb.Client()
   let updateFunction: Function = () => {}
   let updateData: null | object = null
-  let updateStatus: string = ''
+  let updateStatus = ''
   let hookUpdateFunction: Function = () => {}
 
   beforeAll(() => {

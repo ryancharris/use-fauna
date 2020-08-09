@@ -10,7 +10,7 @@ describe('useCreate', () => {
   let client: faunadb.Client = new faunadb.Client()
   let createFunction: Function = () => {}
   let createData: null | object = null
-  let createStatus: string = ''
+  let createStatus = ''
   let hookUpdateFunction: Function = () => {}
 
   beforeAll(() => {

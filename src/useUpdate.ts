@@ -15,7 +15,7 @@ function createQuery(
   schema: string,
   name: string,
   data: UpdateQueryDocumentData,
-  refId: string = ''
+  refId = ''
 ): null | Promise<object> {
   // TODO: Need to add Keys functionality
   switch (schema) {

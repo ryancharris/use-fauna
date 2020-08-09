@@ -10,7 +10,7 @@ describe('useGetAll', () => {
   let client: faunadb.Client = new faunadb.Client()
   let getAllFunction: Function = () => {}
   let getAllData: null | object = null
-  let getAllStatus: string = ''
+  let getAllStatus = ''
   let hookUpdateFunction: Function = () => {}
 
   beforeAll(() => {

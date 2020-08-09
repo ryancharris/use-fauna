@@ -8,7 +8,7 @@ function createQuery(
   schema: string,
   client: faunadb.Client,
   scope: string,
-  refId: string = ''
+  refId = ''
 ): null | Promise<DataItem> {
   switch (schema) {
     case FaunaSchema.Collection:
