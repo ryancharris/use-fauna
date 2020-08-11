@@ -20,7 +20,7 @@ import {
     useCreate,
     useDelete,
     useUpdate
-} = 'use-fauna'
+} from 'use-fauna'
 ```
 
 ## Included hooks
