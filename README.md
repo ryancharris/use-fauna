@@ -84,7 +84,7 @@ Delete a Collection, Database, Document or Index.
 
 ```javascript
 const client = useFaunaClient('ADMIN_KEY')
-const [deleteFunction, data, status] = useCreate(client)
+const [deleteFunction, data, status] = useDelete(client)
 
 deleteFunction('collection', 'my-collection')
 deleteFunction('database', 'my-database')
@@ -99,7 +99,7 @@ Update a Collection, Database, Document, Function, Index or Role.
 
 ```javascript
 const client = useFaunaClient('ADMIN_KEY')
-const [updateFunction, data, status] = useCreate(client)
+const [updateFunction, data, status] = useUpdate(client)
 
 updateFunction('collection', 'my-collection', dataObject)
 updateFunction('database', 'my-database', dataObject)
